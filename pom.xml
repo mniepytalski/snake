@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.cbr</groupId>
-    <artifactId>app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>app</name>
+    <artifactId>snake</artifactId>
+    <version>0.0.3</version>
+    <name>snake</name>
     <description>Spring and swing</description>
     <properties>
         <java.version>11</java.version>
@@ -48,11 +48,21 @@
     </dependencies>
 
     <build>
-        <plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
+        <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources01</id>
@@ -68,6 +78,8 @@
                                     <directory>${basedir}/src/resources</directory>
                                     <includes>
                                         <include>**/*.jpg</include>
+                                        <include>**/*.jpeg</include>
+                                        <include>**/*.png</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -87,31 +99,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources01</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}</outputDirectory>
-                            <encoding>UTF-8</encoding>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/src/resources</directory>
-                                    <includes>
-                                        <include>**/*.jpg</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

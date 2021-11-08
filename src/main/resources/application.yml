@@ -1,4 +1,49 @@
+spring:
+  profiles:
+    active: prod
 
+game:
+  width: 640
+  height: 480
+  dot-size: 10
+  dots-on-start: 3
+  lattice: false
+  apples: 4
+
+  players:
+    - name: Mario1
+      position:
+        x: 5
+        y: 5
+      control:
+        left: VK_LEFT
+        right: VK_RIGHT
+        up: VK_UP
+        down: VK_DOWN
+#    - name: Michal
+#      position:
+#        x: 2
+#        y: 2
+#      control:
+#        left: VK_A
+#        right: VK_D
+#        up: VK_W
+#        down: VK_S
 
 messages:
-  title: Ear
+  title: SnAkE
+  end-game: Game Over, restart press R
+  paused-game: Paused
+  start-game: Start game press R
+  next-level: You are finished level {}, press R for next
+  level-info: Level {}
+  all-points-to-finish: All points {}
+
+resources:
+  ball0: dot0.png
+  ball1: dot1.png
+  apple: apple.png
+  head: head.png
+  wall: wall.png
+  lemon: lemon10.png
+  startLogo: StartLogo.jpg
