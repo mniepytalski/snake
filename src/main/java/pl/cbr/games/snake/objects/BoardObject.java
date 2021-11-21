@@ -44,4 +44,8 @@ public abstract class BoardObject implements Drawing {
             }
         }
     }
+
+    public String toString() {
+        return position.toString();
+    }
 }

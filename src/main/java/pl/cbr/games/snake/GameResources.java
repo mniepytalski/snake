@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.ResourcesConfig;
 
-import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -24,11 +23,11 @@ public class GameResources {
 
     public GameResources(ResourcesConfig resourcesConfig) {
         this.resourcesConfig = resourcesConfig;
+        loadImages();
     }
 
     private static final String IMAGES_DIR = "images/";
 
-    @PostConstruct
     private void loadImages() {
         try {
             Class<?> cls = Class.forName("pl.cbr.games.snake.GameResources");
@@ -40,8 +39,9 @@ public class GameResources {
             resources.put("head", getImage(cLoader,resourcesConfig.getHead()));
             resources.put("wall",getImage(cLoader,resourcesConfig.getWall()));
             resources.put("lemon",getImage(cLoader,resourcesConfig.getLemon()));
-            resources.put("startLogo", getBufferedImage(cLoader,resourcesConfig.getStartLogo()));
-        } catch (ClassNotFoundException | IOException  e) {
+            resources.put("StartLogo", getBufferedImage(cLoader,resourcesConfig.getStartLogo()));
+            System.out.println();
+        } catch (ClassNotFoundException | IOException e) {
             log.error("{} ",e.getMessage(), e);
         }
     }
@@ -67,7 +67,7 @@ public class GameResources {
     }
 
     public Image getStartLogo() {
-        return resources.get("startLogo");
+        return resources.get("StartLogo");
     }
 
     private Image getImage(ClassLoader cLoader, String resourceName) {

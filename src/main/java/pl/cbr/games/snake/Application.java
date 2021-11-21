@@ -18,11 +18,11 @@ public class Application {
     public JFrame frame() {
         JFrame frame = new JFrame(messages.getTitle());
         frame.add(board);
-        frame.pack();
         frame.setResizable(false);
+        frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
         return frame;
     }
 
