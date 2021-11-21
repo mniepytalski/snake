@@ -24,4 +24,8 @@ public class SystemTimer {
     public void stop() {
         timer.stop();
     }
+
+    public boolean isRunning() {
+        return timer.isRunning();
+    }
 }

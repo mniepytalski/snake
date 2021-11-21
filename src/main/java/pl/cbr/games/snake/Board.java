@@ -79,12 +79,13 @@ public class Board extends JPanel implements ActionListener, Drawing {
 
     @Override
     public void paintComponent(Graphics g) {
-        log.debug("paintComponent, gameStatus:{}", gameStatus);
+        log.debug("paintComponent, gameStatus:{}, timer:{}", gameStatus, systemTimer.isRunning());
         switch (gameStatus) {
             case RUNNING:
             case PAUSED:
             case NEXT_LEVEL:
             case START_LOGO:
+            case STOP:
                 super.paintComponent(g);
                 doDrawing(g);
                 break;
