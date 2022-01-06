@@ -14,8 +14,12 @@ import pl.cbr.games.snake.player.Player;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -111,6 +115,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                             systemTimer.stop();
                         } else {
                             boardObject.action(player.getPlayerModel());
+                            playSound();
                             if ( player.getPlayerModel().getPoints()>=levelScenarios.getLevel().getPointsToFinish() ) {
                                 levelScenarios.setNextLevel();
                                 gameStatus = GameStatus.NEXT_LEVEL;
@@ -127,6 +132,22 @@ public class Board extends JPanel implements ActionListener, Drawing {
             }
         });
         repaint();
+    }
+
+    private void playSound() {
+        String soundName = "data/eating1.wav";
+        try {
+            Class<?> cls = Class.forName("pl.cbr.games.snake.Board");
+            var cLoader = cls.getClassLoader();
+            URL url = cLoader.getResource(soundName);
+
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | ClassNotFoundException | IOException | LineUnavailableException e) {
+            log.error("Proglem with read audio file",e);
+        }
     }
 
     private void calcBotMoves() {

@@ -26,7 +26,7 @@ public class GameResources {
         loadImages();
     }
 
-    private static final String IMAGES_DIR = "images/";
+    private static final String IMAGES_DIR = "data/";
 
     private void loadImages() {
         try {
