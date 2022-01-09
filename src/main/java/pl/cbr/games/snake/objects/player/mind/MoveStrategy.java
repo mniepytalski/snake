@@ -12,13 +12,11 @@ public class MoveStrategy extends MoveStrategyBase {
     }
 
     public void calculateMove() {
-        log.info("move:{}", player.getPlayerState().getDirection());
+        log.debug("move:{}", player.getPlayerState().getDirection());
         if ( canIMove() ) {
             changeDirectionIfPossible();
         } else {
-            if (avoidingObstacles()) {
-                return;
-            }
+            avoidingObstacles();
         }
     }
 }

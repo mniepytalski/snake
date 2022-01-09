@@ -115,14 +115,14 @@ public class MoveStrategyBase {
         Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
-                log.info("step1:{}->{}",getStartDirection(), getDirection());
+                log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 turnLeft(getStartDirection());
-                log.info("step2:{}->{}",getStartDirection(), getDirection());
+                log.debug("step2:{}->{}",getStartDirection(), getDirection());
                 boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 oppositeDirection();
-                                log.info("step3:{}->{}", getStartDirection(), getDirection());
+                                log.debug("step3:{}->{}", getStartDirection(), getDirection());
                             }
                         }
                 );
@@ -143,14 +143,14 @@ public class MoveStrategyBase {
         Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
-                log.info("step1:{}->{}",getStartDirection(), getDirection());
+                log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 oppositeDirection();
-                log.info("step2:{}->{}",getStartDirection(), getDirection());
+                log.debug("step2:{}->{}",getStartDirection(), getDirection());
                 boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 setDirection(startDirection);
-                                log.info("step3:{}->{}", getStartDirection(), getDirection());
+                                log.debug("step3:{}->{}", getStartDirection(), getDirection());
                             }
                         }
                 );

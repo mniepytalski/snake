@@ -37,8 +37,6 @@ public abstract class BoardObject implements Drawing {
         g.drawImage(objectImage, position.getX(), position.getY(), null);
     }
 
-    public abstract boolean isEndGame();
-
     public void action(PlayerModel playerModel) {
         for ( int i=0; i<100; i++ ) {
             setRandomPosition();
@@ -47,6 +45,8 @@ public abstract class BoardObject implements Drawing {
             }
         }
     }
+
+    public abstract boolean isEndGame();
 
     public String toString() {
         return position.toString();

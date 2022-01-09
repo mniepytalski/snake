@@ -68,11 +68,9 @@ public class BoardModel {
     }
 
     public Optional<BoardObject> checkCollisions(Player player) {
-        Collision collision = new Collision();
-
         Optional<Player> realPlayer = getPlayers().stream()
                 .filter(p -> p.getId()!=player.getId())
-                .filter(p -> collision.check(p.getPlayerModel().getView(),player.getPlayerModel().getHead()))
+                .filter(p -> Collision.check(p.getPlayerModel().getView(),player.getPlayerModel().getHead()))
                 .findFirst();
 
         if ( realPlayer.isPresent()) {
@@ -85,24 +83,17 @@ public class BoardModel {
     }
 
     public Optional<BoardObject> checkCollisions(Point playerPosition, int objectId) {
-        Collision collision = new Collision();
-
         Optional<Player> realPlayer = getPlayers().stream().filter(player -> player.getId()!=objectId)
-                .filter(player -> collision.check(player.getPlayerModel().getView(),playerPosition))
+                .filter(player -> Collision.check(player.getPlayerModel().getView(),playerPosition))
                 .findFirst();
         if ( realPlayer.isPresent() ) {
             return Optional.of(new PlayerObject(gameConfig, gameResources, null));
         }
-
         if (board.isOutside(playerPosition)) {
             return Optional.of(new RectObject(gameConfig, gameResources, null));
         }
         return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())
         ).findFirst();
-    }
-
-    public boolean isOutsideBoard(Point position) {
-        return getBoard().isOutside(position);
     }
 
     private void tryingToChangeDuplicatePosition() {

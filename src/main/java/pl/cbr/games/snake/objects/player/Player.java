@@ -1,14 +1,15 @@
 package pl.cbr.games.snake.objects.player;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
 import pl.cbr.games.snake.objects.BoardObject;
+import pl.cbr.games.snake.objects.GameObject;
 import pl.cbr.games.snake.objects.PlayerObject;
 import pl.cbr.games.snake.objects.RectObject;
 
@@ -16,8 +17,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Player implements Drawing {
+public class Player extends GameObject implements Drawing {
 
     private final GameConfig gameConfig;
     private PlayerConfig playerConfig;
@@ -46,9 +48,8 @@ public class Player implements Drawing {
         getPlayerModel().move(getPlayerState().getDirection());
     }
 
-    private boolean checkCollision(Point point) {
-        Collision collision = new Collision();
-        return collision.check(getPlayerModel().getView(), point);
+    public void moveBot() {
+
     }
 
     public Optional<BoardObject> checkCollision() {
@@ -62,7 +63,6 @@ public class Player implements Drawing {
             getPlayerState().setInGame(false);
             return Optional.of(new RectObject(gameConfig, gameResources, null));
         }
-//        return !getPlayerState().isInGame();
         return Optional.empty();
     }
 
@@ -86,5 +86,10 @@ public class Player implements Drawing {
 
     public boolean isBot() {
         return getPlayerConfig().getName().indexOf("Bot")==0;
+    }
+
+    @Override
+    public boolean isEndGame() {
+        return true;
     }
 }

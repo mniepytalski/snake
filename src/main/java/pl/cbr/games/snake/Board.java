@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -41,8 +39,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
     private final transient BoardModel boardModel;
     private final transient LevelScenarios levelScenarios;
 
-    private final List<BotPlayer> botPlayers;
-
     public Board(SystemTimer systemTimer, GameConfig gameConfig, GameResources gameResources, BoardGraphics boardGraphics, BoardModel boardModel, LevelScenarios levelScenarios) {
         this.systemTimer = systemTimer;
         this.gameConfig = gameConfig;
@@ -50,7 +46,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
         this.boardModel = boardModel;
         this.levelScenarios = levelScenarios;
         this.gameResources = gameResources;
-        botPlayers = new ArrayList<>();
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
 
 
@@ -60,9 +55,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
         // add it to level scenarios
         // add collision with other players
         // in case of death not finishing level
-//        BotPlayer botPlayer = new BotPlayer(boardModel, new PlayerConfig("Bot1", new PositionConfig(2,2)),  gameConfig, gameResources);
-//        boardModel.addPlayer(botPlayer);
-//        botPlayers.add(botPlayer);
+        BotPlayer botPlayer = new BotPlayer(boardModel, new PlayerConfig("Bot1", new PositionConfig(2,2)),  gameConfig, gameResources);
+        boardModel.addPlayer(botPlayer);
         initBoard();
     }
 
@@ -126,9 +120,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                     }
             );
             Optional<BoardObject> collisionStatus = player.checkCollision();
-            if ( collisionStatus.isPresent() ) {
-                actionOnCollision(player, collisionStatus.get());
-            }
+            collisionStatus.ifPresent(boardObject -> actionOnCollision(player, boardObject));
             if ( GameStatus.RUNNING == gameStatus ) {
                 player.move();
             }
@@ -140,9 +132,9 @@ public class Board extends JPanel implements ActionListener, Drawing {
         log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
         if (player.isBot()) {
-            gameStatus = GameStatus.PAUSED;
-            systemTimer.stop();
-            //player.initPlayer();
+//            gameStatus = GameStatus.PAUSED;
+//            systemTimer.stop();
+            player.initPlayer();
         } else {
             gameStatus = GameStatus.STOP;
             systemTimer.stop();
@@ -166,7 +158,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     private void calcBotMoves() {
-//        boardModel.getPlayers().stream().filter(Player::isBot).forEach(BotPlayer::moveBot);
-        botPlayers.stream().forEach(BotPlayer::moveBot);
+        boardModel.getPlayers().stream().filter(Player::isBot).forEach(Player::moveBot);
     }
 }
