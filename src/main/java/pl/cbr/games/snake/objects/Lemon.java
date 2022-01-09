@@ -4,7 +4,7 @@ import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
-import pl.cbr.games.snake.player.PlayerModel;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 public class Lemon extends BoardObject implements Drawing {
 

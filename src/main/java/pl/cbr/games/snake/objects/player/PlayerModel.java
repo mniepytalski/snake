@@ -1,4 +1,4 @@
-package pl.cbr.games.snake.player;
+package pl.cbr.games.snake.objects.player;
 
 import lombok.Getter;
 import pl.cbr.games.snake.config.GameConfig;

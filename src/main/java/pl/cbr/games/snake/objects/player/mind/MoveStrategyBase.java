@@ -1,16 +1,21 @@
-package pl.cbr.games.snake.player.mind;
+package pl.cbr.games.snake.objects.player.mind;
 
-import pl.cbr.games.snake.Board;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.objects.BoardObject;
-import pl.cbr.games.snake.player.BotPlayer;
-import pl.cbr.games.snake.player.DirectionService;
-import pl.cbr.games.snake.player.MoveDirection;
+import pl.cbr.games.snake.objects.player.BotPlayer;
+import pl.cbr.games.snake.objects.player.DirectionService;
+import pl.cbr.games.snake.objects.player.MoveDirection;
 
 import java.util.Optional;
 
+@Slf4j
+@Getter
 public class MoveStrategyBase {
+
+    MoveDirection startDirection;
 
     BotPlayer player;
     BoardModel boardModel;
@@ -23,15 +28,15 @@ public class MoveStrategyBase {
         this.boardModel = boardModel;
     }
 
-    boolean canMove() {
-        return counter++ > moveDelay;
+    boolean canIMove() {
+        return counter++ > moveDelay + (Math.random()*100);
     }
 
     void youCanMove() {
         counter = 0;
     }
 
-    void opositeDirection() {
+    void oppositeDirection() {
         switch(player.getPlayerState().getDirection()) {
             case RIGHT:
                 setDirection(MoveDirection.LEFT);
@@ -49,7 +54,8 @@ public class MoveStrategyBase {
         youCanMove();
     }
 
-    void turnLeft() {
+    void turnLeft(MoveDirection startDirection) {
+        this.startDirection = startDirection;
         switch(player.getPlayerState().getDirection()) {
             case RIGHT:
                 setDirection(MoveDirection.UP);
@@ -89,6 +95,10 @@ public class MoveStrategyBase {
         player.getPlayerState().setDirection(direction);
     }
 
+    private MoveDirection getDirection() {
+        return player.getPlayerState().getDirection();
+    }
+
     Point calcNextPosition() {
         return calcNextPosition(player.getPlayerModel().getHead());
     }
@@ -100,22 +110,50 @@ public class MoveStrategyBase {
     }
 
     boolean avoidingObstacles() {
+        startDirection = player.getPlayerState().getDirection();
         Point nextPosition = calcNextPosition();
-        Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
+        Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
-                turnLeft();
-                boardModel.checkCollisions(calcNextPosition(nextPosition)).ifPresent(
+                log.info("step1:{}->{}",getStartDirection(), getDirection());
+                turnLeft(getStartDirection());
+                log.info("step2:{}->{}",getStartDirection(), getDirection());
+                boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
                         boardObject -> {
-                            if ( boardObject.isEndGame() )
-                                opositeDirection();
+                            if ( boardObject.isEndGame() ) {
+                                oppositeDirection();
+                                log.info("step3:{}->{}", getStartDirection(), getDirection());
+                            }
                         }
                 );
                 return true;
             }
+        }
+        return false;
+    }
+
+    boolean changeDirectionIfPossible() {
+        startDirection = player.getPlayerState().getDirection();
+        if (Math.random() > 0.5) {
+            turnLeft(startDirection);
         } else {
-            if (boardModel.isOutsideBoard(nextPosition) ) {
-                turnRight();
+            turnRight();
+        }
+        Point nextPosition = calcNextPosition();
+        Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
+        if ( optionalBoardObject.isPresent()) {
+            if ( optionalBoardObject.get().isEndGame() ) {
+                log.info("step1:{}->{}",getStartDirection(), getDirection());
+                oppositeDirection();
+                log.info("step2:{}->{}",getStartDirection(), getDirection());
+                boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
+                        boardObject -> {
+                            if ( boardObject.isEndGame() ) {
+                                setDirection(startDirection);
+                                log.info("step3:{}->{}", getStartDirection(), getDirection());
+                            }
+                        }
+                );
                 return true;
             }
         }

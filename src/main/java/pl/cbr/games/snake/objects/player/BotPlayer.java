@@ -1,10 +1,10 @@
-package pl.cbr.games.snake.player;
+package pl.cbr.games.snake.objects.player;
 
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.player.mind.MoveStrategy;
+import pl.cbr.games.snake.objects.player.mind.MoveStrategy;
 
 import java.awt.event.KeyEvent;
 

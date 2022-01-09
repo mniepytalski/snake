@@ -36,4 +36,12 @@ public class Point {
     public Point division(int value) {
         return new Point(getX() / value, getY() / value);
     }
+
+    public static Point Random(int x, int y) {
+        return new Point((int) (Math.random() * x ), (int) (Math.random() * y ));
+    }
+
+    public String toString() {
+        return "(x:"+x+",y:"+y+")";
+    }
 }

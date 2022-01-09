@@ -5,20 +5,23 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.config.PlayerConfig;
+import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.gfx.BoardGraphics;
 import pl.cbr.games.snake.levels.LevelScenarios;
-import pl.cbr.games.snake.player.BotPlayer;
-import pl.cbr.games.snake.player.LivePlayer;
-import pl.cbr.games.snake.player.Player;
+import pl.cbr.games.snake.objects.BoardObject;
+import pl.cbr.games.snake.objects.player.BotPlayer;
+import pl.cbr.games.snake.objects.player.LivePlayer;
+import pl.cbr.games.snake.objects.player.Player;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
@@ -111,8 +114,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         boardModel.getPlayers().stream().filter(player -> player.getPlayerState().isInGame()).forEach(player -> {
             boardModel.checkCollisions(player).ifPresent(boardObject -> {
                         if ( boardObject.isEndGame() ) {
-                            gameStatus = GameStatus.STOP;
-                            systemTimer.stop();
+                            actionOnCollision(player, boardObject);
                         } else {
                             boardObject.action(player.getPlayerModel());
                             playSound();
@@ -123,15 +125,28 @@ public class Board extends JPanel implements ActionListener, Drawing {
                         }
                     }
             );
-            if (player.checkCollision() ) {
-                gameStatus = GameStatus.STOP;
-                systemTimer.stop();
+            Optional<BoardObject> collisionStatus = player.checkCollision();
+            if ( collisionStatus.isPresent() ) {
+                actionOnCollision(player, collisionStatus.get());
             }
             if ( GameStatus.RUNNING == gameStatus ) {
                 player.move();
             }
         });
         repaint();
+    }
+
+    private void actionOnCollision(Player player, BoardObject collisionObject) {
+        log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
+                player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
+        if (player.isBot()) {
+            gameStatus = GameStatus.PAUSED;
+            systemTimer.stop();
+            //player.initPlayer();
+        } else {
+            gameStatus = GameStatus.STOP;
+            systemTimer.stop();
+        }
     }
 
     private void playSound() {
@@ -146,11 +161,12 @@ public class Board extends JPanel implements ActionListener, Drawing {
             clip.open(audioInputStream);
             clip.start();
         } catch (UnsupportedAudioFileException | ClassNotFoundException | IOException | LineUnavailableException e) {
-            log.error("Proglem with read audio file",e);
+            log.error("Problem with read audio file",e);
         }
     }
 
     private void calcBotMoves() {
+//        boardModel.getPlayers().stream().filter(Player::isBot).forEach(BotPlayer::moveBot);
         botPlayers.stream().forEach(BotPlayer::moveBot);
     }
 }

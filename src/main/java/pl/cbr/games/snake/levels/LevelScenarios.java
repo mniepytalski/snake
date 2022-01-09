@@ -15,22 +15,22 @@ public class LevelScenarios {
     public LevelScenarios() {
         actualLevel = 0;
         this.levels = new ArrayList<>();
-        levels.add((new Level(20,1,0,0)));
-        levels.add((new Level(30,4,1,0)));
-        levels.add((new Level(50,5,5,0)));
-        levels.add((new Level(50,5,10,1)));
-        levels.add((new Level(30,5,20,2)));
+        levels.add((new Level(20,1,0,0,0)));
+        levels.add((new Level(30,4,1,0,1)));
+        levels.add((new Level(50,5,5,0,1)));
+        levels.add((new Level(50,5,10,1,1)));
+        levels.add((new Level(30,5,20,2,1)));
 
-        levels.add((new Level(30,10,20,3)));
-        levels.add((new Level(40,15,20,4)));
-        levels.add((new Level(50,20,20,5)));
-        levels.add((new Level(60,25,20,6)));
-        levels.add((new Level(70,20,20,7)));
-        levels.add((new Level(80,35,20,8)));
+        levels.add((new Level(30,10,20,3,1)));
+        levels.add((new Level(40,15,20,4,1)));
+        levels.add((new Level(50,20,20,5,1)));
+        levels.add((new Level(60,25,20,6,1)));
+        levels.add((new Level(70,20,20,7,1)));
+        levels.add((new Level(80,35,20,8,1)));
 
-        levels.add((new Level(50,5,100,15)));
+        levels.add((new Level(50,5,100,15,1)));
 
-        levels.add((new Level(200,200,0,5)));
+        levels.add((new Level(200,200,0,5,1)));
     }
 
     public void setNextLevel() {

@@ -1,15 +1,20 @@
-package pl.cbr.games.snake.player;
+package pl.cbr.games.snake.objects.player;
 
 import lombok.Data;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
+import pl.cbr.games.snake.objects.BoardObject;
+import pl.cbr.games.snake.objects.PlayerObject;
+import pl.cbr.games.snake.objects.RectObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Optional;
 
 @Data
 public class Player implements Drawing {
@@ -41,18 +46,24 @@ public class Player implements Drawing {
         getPlayerModel().move(getPlayerState().getDirection());
     }
 
-    public boolean checkCollision() {
+    private boolean checkCollision(Point point) {
+        Collision collision = new Collision();
+        return collision.check(getPlayerModel().getView(), point);
+    }
+
+    public Optional<BoardObject> checkCollision() {
         if ( getPlayerModel().checkOurselfCollision() ) {
             getPlayerState().setInGame(false);
-            return false;
+            return Optional.of(new PlayerObject(gameConfig, gameResources, null));
         }
         Rectangle boardRectangle = new Rectangle(new Point(),
                 (new Point(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
         if (getPlayerModel().isOutside(boardRectangle)) {
             getPlayerState().setInGame(false);
-            return false;
+            return Optional.of(new RectObject(gameConfig, gameResources, null));
         }
-        return !getPlayerState().isInGame();
+//        return !getPlayerState().isInGame();
+        return Optional.empty();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -71,5 +82,9 @@ public class Player implements Drawing {
         }
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(playerConfig.getName()+": "+getPlayerModel().getPoints(),10,14*id);
+    }
+
+    public boolean isBot() {
+        return getPlayerConfig().getName().indexOf("Bot")==0;
     }
 }

@@ -10,4 +10,5 @@ public class Level {
     private int apples;
     private int walls;
     private int lemons;
+    private int bots;
 }

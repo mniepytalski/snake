@@ -4,14 +4,12 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
 import pl.cbr.games.snake.levels.Level;
-import pl.cbr.games.snake.objects.Apple;
-import pl.cbr.games.snake.objects.BoardObject;
-import pl.cbr.games.snake.objects.Lemon;
-import pl.cbr.games.snake.objects.Wall;
-import pl.cbr.games.snake.player.Player;
+import pl.cbr.games.snake.objects.*;
+import pl.cbr.games.snake.objects.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,11 +68,35 @@ public class BoardModel {
     }
 
     public Optional<BoardObject> checkCollisions(Player player) {
+        Collision collision = new Collision();
+
+        Optional<Player> realPlayer = getPlayers().stream()
+                .filter(p -> p.getId()!=player.getId())
+                .filter(p -> collision.check(p.getPlayerModel().getView(),player.getPlayerModel().getHead()))
+                .findFirst();
+
+        if ( realPlayer.isPresent()) {
+            return Optional.of(new PlayerObject(gameConfig, gameResources, null));
+        }
+
+        // TODO - add check collision with board
         return getObjects().stream().filter(wall -> player.getPlayerModel().getHead().equals(wall.getPosition())
         ).findFirst();
     }
 
-    public Optional<BoardObject> checkCollisions(Point playerPosition) {
+    public Optional<BoardObject> checkCollisions(Point playerPosition, int objectId) {
+        Collision collision = new Collision();
+
+        Optional<Player> realPlayer = getPlayers().stream().filter(player -> player.getId()!=objectId)
+                .filter(player -> collision.check(player.getPlayerModel().getView(),playerPosition))
+                .findFirst();
+        if ( realPlayer.isPresent() ) {
+            return Optional.of(new PlayerObject(gameConfig, gameResources, null));
+        }
+
+        if (board.isOutside(playerPosition)) {
+            return Optional.of(new RectObject(gameConfig, gameResources, null));
+        }
         return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())
         ).findFirst();
     }
