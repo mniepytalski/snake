@@ -8,6 +8,7 @@ import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.GameStatus;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.MessagesConfig;
+import pl.cbr.games.snake.objects.player.Player;
 
 import java.awt.*;
 
@@ -73,6 +74,11 @@ public class BoardGraphics {
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(format(messages.getLevelInfo(), (board.getLevelScenarios().getActualLevel()+1)), 80, 14);
         g.drawString(format(messages.getAllPointsToFinish(), board.getLevelScenarios().getLevel().getPointsToFinish()), 140, 14);
+
+        int id = 1;
+        for (Player player : board.getBoardModel().getPlayers()) {
+            player.printPoints(g,id++);
+        }
     }
 
     private void gameOver(Graphics g, Board board) {

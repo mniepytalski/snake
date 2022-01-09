@@ -16,9 +16,9 @@ public class LevelScenarios {
         actualLevel = 0;
         this.levels = new ArrayList<>();
         levels.add((new Level(20,1,0,0,0)));
-        levels.add((new Level(30,4,1,0,1)));
-        levels.add((new Level(50,5,5,0,1)));
-        levels.add((new Level(50,5,10,1,1)));
+        levels.add((new Level(30,4,1,0,0)));
+        levels.add((new Level(50,5,5,0,0)));
+        levels.add((new Level(50,5,10,1,0)));
         levels.add((new Level(30,5,20,2,1)));
 
         levels.add((new Level(30,10,20,3,1)));

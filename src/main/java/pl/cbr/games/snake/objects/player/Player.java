@@ -39,6 +39,10 @@ public class Player extends GameObject implements Drawing {
         playerModel = new PlayerModel(gameConfig);
     }
 
+    public static void setIdGenerator(int i) {
+        idGenerator = i;
+    }
+
     public void initPlayer() {
         playerModel.initPlayer(playerConfig.getPosition().getPoint());
         playerState.initState();
@@ -80,6 +84,9 @@ public class Player extends GameObject implements Drawing {
                 g.drawImage(gameResources.getBall(getId()%2), point.getX(), point.getY(), null);
             }
         }
+    }
+
+    public void printPoints(Graphics g, int id) {
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(playerConfig.getName()+": "+getPlayerModel().getPoints(),10,14*id);
     }

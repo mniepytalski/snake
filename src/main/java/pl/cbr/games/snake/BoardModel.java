@@ -4,11 +4,14 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.config.PlayerConfig;
+import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
+import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
 
 import java.util.ArrayList;
@@ -50,6 +53,15 @@ public class BoardModel {
         IntStream.rangeClosed(1, level.getApples()).forEach(n -> getObjects().add(new Apple(gameConfig, gameResources,this)));
         IntStream.rangeClosed(1, level.getWalls()).forEach(n -> getObjects().add(new Wall(gameConfig, gameResources, this)));
         IntStream.rangeClosed(1, level.getLemons()).forEach(n -> getObjects().add(new Lemon(gameConfig, gameResources, this)));
+
+        List<Player> livePlayers = players.stream().filter(player -> !player.isBot()).collect(Collectors.toList());
+        players.clear();
+        players.addAll(livePlayers);
+
+        for ( int i=0; i< level.getBots(); i++) {
+            BotPlayer botPlayer = new BotPlayer(this, new PlayerConfig("Bot"+i, new PositionConfig(2+i*5, 2+i*5)), gameConfig, gameResources);
+            addPlayer(botPlayer);
+        }
 
         objects.forEach(BoardObject::setRandomPosition);
         tryingToChangeDuplicatePosition();

@@ -5,12 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
-import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.gfx.BoardGraphics;
 import pl.cbr.games.snake.levels.LevelScenarios;
 import pl.cbr.games.snake.objects.BoardObject;
-import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.LivePlayer;
 import pl.cbr.games.snake.objects.player.Player;
 
@@ -47,16 +44,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         this.levelScenarios = levelScenarios;
         this.gameResources = gameResources;
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
-
-
-
         this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(playerConfig, gameConfig, gameResources)));
-        // TODO
-        // add it to level scenarios
-        // add collision with other players
-        // in case of death not finishing level
-        BotPlayer botPlayer = new BotPlayer(boardModel, new PlayerConfig("Bot1", new PositionConfig(2,2)),  gameConfig, gameResources);
-        boardModel.addPlayer(botPlayer);
         initBoard();
     }
 
@@ -132,8 +120,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
         log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
         if (player.isBot()) {
-//            gameStatus = GameStatus.PAUSED;
-//            systemTimer.stop();
             player.initPlayer();
         } else {
             gameStatus = GameStatus.STOP;
