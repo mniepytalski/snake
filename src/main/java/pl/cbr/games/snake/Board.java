@@ -99,10 +99,12 @@ public class Board extends JPanel implements ActionListener, Drawing {
                             actionOnCollision(player, boardObject);
                         } else {
                             boardObject.actionOnPlayerHit(player.getPlayerModel());
-                            playSound();
                             if ( player.getPlayerModel().getPoints()>=levelScenarios.getLevel().getPointsToFinish() ) {
                                 levelScenarios.setNextLevel();
                                 gameStatus = GameStatus.NEXT_LEVEL;
+                                playSound("nextLevel");
+                            } else {
+                                playSound("eating1");
                             }
                         }
                     }
@@ -127,8 +129,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
         }
     }
 
-    private void playSound() {
-        String soundName = "data/eating1.wav";
+    private void playSound(String name) {
+        String soundName = "data/"+name+".wav";
         try {
             Class<?> cls = Class.forName("pl.cbr.games.snake.Board");
             var cLoader = cls.getClassLoader();
