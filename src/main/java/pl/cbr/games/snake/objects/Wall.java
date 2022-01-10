@@ -6,10 +6,12 @@ import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
-public class Wall extends BoardObject implements Drawing {
+import java.awt.*;
+
+public class Wall extends OnePointObject implements Drawing {
 
     public Wall(GameConfig gameConfig, GameResources gameResources, BoardModel boardModel) {
-        super(gameConfig, boardModel, gameResources.getWall());
+        super(gameConfig, boardModel, gameResources);
     }
 
     @Override
@@ -18,7 +20,16 @@ public class Wall extends BoardObject implements Drawing {
     }
 
     @Override
-    public void action(PlayerModel playerModel) {
+    public Image getImage() {
+        return gameResources.getWall();
+    }
 
+    @Override
+    public void actionOnPlayerHit(PlayerModel playerModel) {
+
+    }
+
+    public String toString() {
+        return "wall"+super.toString();
     }
 }

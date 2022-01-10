@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.geom2d.Point;
-import pl.cbr.games.snake.objects.BoardObject;
+import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.DirectionService;
 import pl.cbr.games.snake.objects.player.MoveDirection;
@@ -112,7 +112,7 @@ public class MoveStrategyBase {
     boolean avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
         Point nextPosition = calcNextPosition();
-        Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
+        Optional<OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
@@ -140,7 +140,7 @@ public class MoveStrategyBase {
             turnRight();
         }
         Point nextPosition = calcNextPosition();
-        Optional<BoardObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
+        Optional<OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());

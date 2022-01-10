@@ -40,7 +40,6 @@ public class GameResources {
             resources.put("wall",getImage(cLoader,resourcesConfig.getWall()));
             resources.put("lemon",getImage(cLoader,resourcesConfig.getLemon()));
             resources.put("StartLogo", getBufferedImage(cLoader,resourcesConfig.getStartLogo()));
-            System.out.println();
         } catch (ClassNotFoundException | IOException e) {
             log.error("{} ",e.getMessage(), e);
         }

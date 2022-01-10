@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.gfx.BoardGraphics;
 import pl.cbr.games.snake.levels.LevelScenarios;
-import pl.cbr.games.snake.objects.BoardObject;
+import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.LivePlayer;
 import pl.cbr.games.snake.objects.player.Player;
 
@@ -44,7 +44,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         this.levelScenarios = levelScenarios;
         this.gameResources = gameResources;
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(playerConfig, gameConfig, gameResources)));
+        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, gameResources)));
         initBoard();
     }
 
@@ -98,7 +98,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                         if ( boardObject.isEndGame() ) {
                             actionOnCollision(player, boardObject);
                         } else {
-                            boardObject.action(player.getPlayerModel());
+                            boardObject.actionOnPlayerHit(player.getPlayerModel());
                             playSound();
                             if ( player.getPlayerModel().getPoints()>=levelScenarios.getLevel().getPointsToFinish() ) {
                                 levelScenarios.setNextLevel();
@@ -107,7 +107,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                         }
                     }
             );
-            Optional<BoardObject> collisionStatus = player.checkCollision();
+            Optional<OnePointObject> collisionStatus = player.checkCollision();
             collisionStatus.ifPresent(boardObject -> actionOnCollision(player, boardObject));
             if ( GameStatus.RUNNING == gameStatus ) {
                 player.move();
@@ -116,7 +116,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         repaint();
     }
 
-    private void actionOnCollision(Player player, BoardObject collisionObject) {
+    private void actionOnCollision(Player player, OnePointObject collisionObject) {
         log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
         if (player.isBot()) {

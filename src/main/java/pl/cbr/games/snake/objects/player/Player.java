@@ -1,29 +1,26 @@
 package pl.cbr.games.snake.objects.player;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import pl.cbr.games.snake.Drawing;
+import lombok.Getter;
+import lombok.Setter;
+import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
-import pl.cbr.games.snake.objects.BoardObject;
-import pl.cbr.games.snake.objects.GameObject;
-import pl.cbr.games.snake.objects.PlayerObject;
-import pl.cbr.games.snake.objects.RectObject;
+import pl.cbr.games.snake.objects.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-public class Player extends GameObject implements Drawing {
+@Getter
+@Setter
+public class Player extends OnePointObject {
 
-    private final GameConfig gameConfig;
     private PlayerConfig playerConfig;
-    private final GameResources gameResources;
 
 	private int id;
     PlayerState playerState;
@@ -31,16 +28,11 @@ public class Player extends GameObject implements Drawing {
 
     private static int idGenerator = 1;
 
-    public Player(PlayerConfig playerConfig, GameConfig gameConfig, GameResources gameResources) {
+    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, GameResources gameResources) {
+        super(gameConfig, boardModel, gameResources);
         this.id = idGenerator++;
-        this.gameConfig = gameConfig;
         this.playerConfig = playerConfig;
-        this.gameResources = gameResources;
         playerModel = new PlayerModel(gameConfig);
-    }
-
-    public static void setIdGenerator(int i) {
-        idGenerator = i;
     }
 
     public void initPlayer() {
@@ -56,7 +48,7 @@ public class Player extends GameObject implements Drawing {
 
     }
 
-    public Optional<BoardObject> checkCollision() {
+    public Optional<OnePointObject> checkCollision() {
         if ( getPlayerModel().checkOurselfCollision() ) {
             getPlayerState().setInGame(false);
             return Optional.of(new PlayerObject(gameConfig, gameResources, null));
@@ -75,13 +67,19 @@ public class Player extends GameObject implements Drawing {
     }
 
     @Override
+    public Image getImage() {
+        return null;
+    }
+
+    @Override
     public void doDrawing(Graphics g) {
+        int imageId = isBot() ? 0 : 1;
         for (int z = 0; z < getPlayerModel().getViewSize(); z++) {
             Point point = getPlayerModel().get(z).multiply(gameConfig.getDotSize());
             if (z == 0) {
                 g.drawImage(gameResources.getHead(),  point.getX(), point.getY(), null);
             } else {
-                g.drawImage(gameResources.getBall(getId()%2), point.getX(), point.getY(), null);
+                g.drawImage(gameResources.getBall(imageId), point.getX(), point.getY(), null);
             }
         }
     }
@@ -98,5 +96,10 @@ public class Player extends GameObject implements Drawing {
     @Override
     public boolean isEndGame() {
         return true;
+    }
+
+    @Override
+    public void actionOnPlayerHit(PlayerModel playerModel) {
+
     }
 }

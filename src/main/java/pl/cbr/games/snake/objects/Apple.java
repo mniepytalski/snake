@@ -7,11 +7,13 @@ import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
+import java.awt.*;
+
 @Slf4j
-public class Apple extends BoardObject implements Drawing {
+public class Apple extends OnePointObject implements Drawing {
 
     public Apple(GameConfig gameConfig, GameResources gameResources, BoardModel boardModel) {
-        super(gameConfig, boardModel, gameResources.getApple());
+        super(gameConfig, boardModel, gameResources);
     }
 
     @Override
@@ -20,8 +22,17 @@ public class Apple extends BoardObject implements Drawing {
     }
 
     @Override
-    public void action(PlayerModel playerModel) {
+    public Image getImage() {
+        return gameResources.getApple();
+    }
+
+    @Override
+    public void actionOnPlayerHit(PlayerModel playerModel) {
         playerModel.addLength(5);
-        super.action(playerModel);
+        super.actionOnPlayerHit(playerModel);
+    }
+
+    public String toString() {
+        return "apple"+super.toString();
     }
 }

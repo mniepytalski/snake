@@ -13,7 +13,7 @@ public class BotPlayer extends Player {
     private final MoveStrategy mind;
 
     public BotPlayer(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, GameResources gameResources) {
-        super(playerConfig, gameConfig, gameResources);
+        super(boardModel, playerConfig, gameConfig, gameResources);
         playerState = new PlayerState();
         mind = new MoveStrategy( this, boardModel);
     }

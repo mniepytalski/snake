@@ -6,10 +6,12 @@ import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
-public class Lemon extends BoardObject implements Drawing {
+import java.awt.*;
+
+public class Lemon extends OnePointObject implements Drawing {
 
     public Lemon(GameConfig gameConfig, GameResources gameResources, BoardModel boardModel) {
-        super(gameConfig, boardModel, gameResources.getLemon());
+        super(gameConfig, boardModel, gameResources);
     }
 
     @Override
@@ -18,8 +20,17 @@ public class Lemon extends BoardObject implements Drawing {
     }
 
     @Override
-    public void action(PlayerModel playerModel) {
+    public Image getImage() {
+        return gameResources.getLemon();
+    }
+
+    @Override
+    public void actionOnPlayerHit(PlayerModel playerModel) {
         playerModel.setLength(4);
-        super.action(playerModel);
+        super.actionOnPlayerHit(playerModel);
+    }
+
+    public String toString() {
+        return "lemon"+super.toString();
     }
 }

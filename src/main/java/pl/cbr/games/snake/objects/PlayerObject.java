@@ -4,14 +4,21 @@ import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.GameResources;
 import pl.cbr.games.snake.config.GameConfig;
 
-public class PlayerObject extends BoardObject {
+import java.awt.*;
+
+public class PlayerObject extends OnePointObject {
 
     public PlayerObject(GameConfig gameConfig, GameResources gameResources, BoardModel boardModel) {
-        super(gameConfig, boardModel, gameResources.getApple());
+        super(gameConfig, boardModel, gameResources);
     }
 
     @Override
     public boolean isEndGame() {
         return true;
+    }
+
+    @Override
+    public Image getImage() {
+        return null;
     }
 }
