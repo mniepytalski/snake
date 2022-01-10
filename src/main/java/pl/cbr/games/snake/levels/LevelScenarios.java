@@ -30,7 +30,7 @@ public class LevelScenarios {
 
         levels.add((new Level(50,5,100,15,1)));
 
-        levels.add((new Level(200,200,0,5,3)));
+        levels.add((new Level(200,200,0,5,0)));
     }
 
     public void setNextLevel() {

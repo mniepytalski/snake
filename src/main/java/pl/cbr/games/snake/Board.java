@@ -32,19 +32,19 @@ public class Board extends JPanel implements ActionListener, Drawing {
     private final SystemTimer systemTimer;
     private final transient GameConfig gameConfig;
     private final transient BoardGraphics boardGraphics;
-    private final transient GameResources gameResources;
+    private final transient ResourceLoader resourceLoader;
     private final transient BoardModel boardModel;
     private final transient LevelScenarios levelScenarios;
 
-    public Board(SystemTimer systemTimer, GameConfig gameConfig, GameResources gameResources, BoardGraphics boardGraphics, BoardModel boardModel, LevelScenarios levelScenarios) {
+    public Board(SystemTimer systemTimer, GameConfig gameConfig, ResourceLoader resourceLoader, BoardGraphics boardGraphics, BoardModel boardModel, LevelScenarios levelScenarios) {
         this.systemTimer = systemTimer;
         this.gameConfig = gameConfig;
         this.boardGraphics = boardGraphics;
         this.boardModel = boardModel;
         this.levelScenarios = levelScenarios;
-        this.gameResources = gameResources;
+        this.resourceLoader = resourceLoader;
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, gameResources)));
+        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, resourceLoader)));
         initBoard();
     }
 

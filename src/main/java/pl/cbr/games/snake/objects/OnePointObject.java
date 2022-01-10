@@ -1,22 +1,27 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
-import pl.cbr.games.snake.GameResources;
+import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.awt.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 public abstract class OnePointObject extends BaseObject implements Drawing {
 
     private Point position;
 
-    protected OnePointObject(GameConfig gameConfig, BoardModel boardModel, GameResources gameResources) {
-        super(boardModel, gameConfig, gameResources);
+    protected OnePointObject(GameConfig gameConfig, BoardModel boardModel, ResourceLoader resourceLoader) {
+        super(boardModel, gameConfig, resourceLoader);
         this.position = new Point();
     }
 

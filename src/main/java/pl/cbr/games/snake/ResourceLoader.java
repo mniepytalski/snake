@@ -15,13 +15,13 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class GameResources {
+public class ResourceLoader {
 
-    private final Map<String, Image> resources = new HashMap<>();
+    private final Map<GameResource, Image> resources = new HashMap<>();
 
     private final ResourcesConfig resourcesConfig;
 
-    public GameResources(ResourcesConfig resourcesConfig) {
+    public ResourceLoader(ResourcesConfig resourcesConfig) {
         this.resourcesConfig = resourcesConfig;
         loadImages();
     }
@@ -30,43 +30,23 @@ public class GameResources {
 
     private void loadImages() {
         try {
-            Class<?> cls = Class.forName("pl.cbr.games.snake.GameResources");
+            Class<?> cls = Class.forName("pl.cbr.games.snake.ResourceLoader");
             var cLoader = cls.getClassLoader();
 
-            resources.put("ball0", getImage(cLoader, resourcesConfig.getBall0()));
-            resources.put("ball1", getImage(cLoader, resourcesConfig.getBall1()));
-            resources.put("apple", getImage(cLoader, resourcesConfig.getApple()));
-            resources.put("head", getImage(cLoader,resourcesConfig.getHead()));
-            resources.put("wall",getImage(cLoader,resourcesConfig.getWall()));
-            resources.put("lemon",getImage(cLoader,resourcesConfig.getLemon()));
-            resources.put("StartLogo", getBufferedImage(cLoader,resourcesConfig.getStartLogo()));
+            resources.put(GameResource.BALL0, getImage(cLoader, resourcesConfig.getBall0()));
+            resources.put(GameResource.BALL1, getImage(cLoader, resourcesConfig.getBall1()));
+            resources.put(GameResource.APPLE, getImage(cLoader, resourcesConfig.getApple()));
+            resources.put(GameResource.HEAD, getImage(cLoader,resourcesConfig.getHead()));
+            resources.put(GameResource.WALL,getImage(cLoader,resourcesConfig.getWall()));
+            resources.put(GameResource.LEMON,getImage(cLoader,resourcesConfig.getLemon()));
+            resources.put(GameResource.START_LOGO, getBufferedImage(cLoader,resourcesConfig.getStartLogo()));
         } catch (ClassNotFoundException | IOException e) {
             log.error("{} ",e.getMessage(), e);
         }
     }
 
-    public Image getBall(int i) {
-        return resources.get("ball"+i);
-    }
-
-    public Image getApple() {
-        return resources.get("apple");
-    }
-
-    public Image getHead() {
-        return resources.get("head");
-    }
-
-    public Image getWall() {
-        return resources.get("wall");
-    }
-
-    public Image getLemon() {
-        return resources.get("lemon");
-    }
-
-    public Image getStartLogo() {
-        return resources.get("StartLogo");
+    public Image get(GameResource gameResource) {
+        return resources.get(gameResource);
     }
 
     private Image getImage(ClassLoader cLoader, String resourceName) {

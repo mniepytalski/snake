@@ -15,11 +15,9 @@ import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,32 +29,32 @@ import static java.util.stream.Collectors.collectingAndThen;
 public class BoardModel {
 
     private final GameConfig gameConfig;
-    private final GameResources gameResources;
+    private final ResourceLoader resourceLoader;
     private final Rectangle board;
 
     private final List<OnePointObject> objects;
     private final List<Player> players;
 
-    public BoardModel(GameConfig gameConfig, GameResources gameResources) {
+    public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader) {
         this.gameConfig = gameConfig;
-        this.gameResources = gameResources;
+        this.resourceLoader = resourceLoader;
 
         objects = new ArrayList<>();
         players = new ArrayList<>();
 
         board = new Rectangle(new Point(),
-                (new Point(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
+                (new Point(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
     }
 
     public void init(Level level) {
         objects.clear();
-        IntStream.rangeClosed(1, level.getApples()).forEach(n -> getObjects().add(new Apple(gameConfig, gameResources,this)));
-        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> getObjects().add(new Wall(gameConfig, gameResources, this)));
-        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> getObjects().add(new Lemon(gameConfig, gameResources, this)));
+        IntStream.rangeClosed(1, level.getApples()).forEach(n -> getObjects().add(new Apple(gameConfig, resourceLoader, this)));
+        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> getObjects().add(new Wall(gameConfig, resourceLoader, this)));
+        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> getObjects().add(new Lemon(gameConfig, resourceLoader, this)));
 
         clearBots();
-        for ( int i=0; i< level.getBots(); i++) {
-            addPlayer(new BotPlayer(this, new PlayerConfig("Bot"+i, new PositionConfig(2+i*5, 2+i*5)), gameConfig, gameResources));
+        for (int i = 0; i < level.getBots(); i++) {
+            addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, resourceLoader));
         }
 
         objects.forEach(OnePointObject::setRandomPosition);
@@ -74,27 +72,15 @@ public class BoardModel {
     }
 
     public boolean collisionWithPoint() {
-
-//        Map<Point, List<OnePointObject>> dup1 = objects.stream()
-//                .collect(
-//                    collectingAndThen(
-//                        Collectors.groupingBy(OnePointObject::getPosition)
-//                    ,m -> { m.values().removeIf(v -> v.size() <= 1L); return m; })
-//                );
-
-        List<Point> positions = objects.stream().map(OnePointObject::getPosition).collect(Collectors.toList());
-        players.forEach(player -> positions.addAll(player.getPlayerModel().getView()));
-        Set<Point> duplicates = positions.stream().filter(i -> Collections.frequency(positions, i) > 1)
-                .collect(Collectors.toSet());
-        return !duplicates.isEmpty();
+        return !detectDuplicates().isEmpty();
     }
 
     public Optional<OnePointObject> checkCollisions(Player player) {
         Optional<Player> realPlayer = getPlayers().stream()
-                .filter(p -> p.getId()!=player.getId())
-                .filter(p -> Collision.check(p.getPlayerModel().getView(),player.getPlayerModel().getHead()))
+                .filter(p -> p.getId() != player.getId())
+                .filter(p -> Collision.check(p.getPlayerModel().getView(), player.getPlayerModel().getHead()))
                 .findFirst();
-        if ( realPlayer.isPresent()) {
+        if (realPlayer.isPresent()) {
             return Optional.of(realPlayer.get());
         }
         return getObjects().stream().filter(wall -> player.getPlayerModel().getHead().equals(wall.getPosition())
@@ -102,14 +88,14 @@ public class BoardModel {
     }
 
     public Optional<OnePointObject> checkCollisions(Point playerPosition, int objectId) {
-        Optional<Player> realPlayer = getPlayers().stream().filter(player -> player.getId()!=objectId)
-                .filter(player -> Collision.check(player.getPlayerModel().getView(),playerPosition))
+        Optional<Player> realPlayer = getPlayers().stream().filter(player -> player.getId() != objectId)
+                .filter(player -> Collision.check(player.getPlayerModel().getView(), playerPosition))
                 .findFirst();
-        if ( realPlayer.isPresent() ) {
+        if (realPlayer.isPresent()) {
             return Optional.of(realPlayer.get());
         }
         if (board.isOutside(playerPosition)) {
-            return Optional.of(new RectObject(gameConfig, gameResources, null));
+            return Optional.of(new RectObject(gameConfig, resourceLoader, null));
         }
         return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())
         ).findFirst();
@@ -118,7 +104,7 @@ public class BoardModel {
     private void tryingToChangeDuplicatePosition() {
         int attempt = 1;
         int duplicates = getDuplicatesAndChangePosition();
-        for ( int x=0; x<200; x++ ) {
+        for (int x = 0; x < 200; x++) {
             if (duplicates > 0) {
                 getDuplicatesAndChangePosition();
                 ++attempt;
@@ -126,19 +112,26 @@ public class BoardModel {
                 break;
             }
         }
-        if ( duplicates>0 ) {
+        if (duplicates > 0) {
             log.info("{} init objects:{}, duplicates:{}", attempt, objects.size(), duplicates);
         }
     }
 
     private int getDuplicatesAndChangePosition() {
-        List<List<OnePointObject>> duplicates = detectDuplicates();
-        duplicates.forEach((dup) -> dup.forEach(OnePointObject::setRandomPosition));
+        Map<Point, List<OnePointObject>> duplicates = detectDuplicates();
+        duplicates.forEach((k,v) -> v.stream().skip(1).forEach(OnePointObject::setRandomPosition));
         return duplicates.size();
     }
 
-    private List<List<OnePointObject>> detectDuplicates() {
-        Map<Point, List<OnePointObject>> maps = objects.stream().collect(Collectors.groupingBy(OnePointObject::getPosition));
-        return maps.values().stream().filter(list -> list.size()>1).collect(Collectors.toList());
+    private Map<Point, List<OnePointObject>> detectDuplicates() {
+        return objects.stream()
+                .collect(
+                        collectingAndThen(
+                                Collectors.groupingBy(OnePointObject::getPosition)
+                                , m -> {
+                                    m.values().removeIf(v -> v.size() <= 1L);
+                                    return m;
+                                })
+                );
     }
 }

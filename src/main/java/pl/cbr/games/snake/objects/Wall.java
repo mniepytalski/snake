@@ -2,7 +2,8 @@ package pl.cbr.games.snake.objects;
 
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
-import pl.cbr.games.snake.GameResources;
+import pl.cbr.games.snake.GameResource;
+import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
@@ -10,8 +11,8 @@ import java.awt.*;
 
 public class Wall extends OnePointObject implements Drawing {
 
-    public Wall(GameConfig gameConfig, GameResources gameResources, BoardModel boardModel) {
-        super(gameConfig, boardModel, gameResources);
+    public Wall(GameConfig gameConfig, ResourceLoader resourceLoader, BoardModel boardModel) {
+        super(gameConfig, boardModel, resourceLoader);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class Wall extends OnePointObject implements Drawing {
 
     @Override
     public Image getImage() {
-        return gameResources.getWall();
+        return resourceLoader.get(GameResource.WALL);
     }
 
     @Override

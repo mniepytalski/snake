@@ -2,10 +2,7 @@ package pl.cbr.games.snake.gfx;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import pl.cbr.games.snake.Board;
-import pl.cbr.games.snake.BoardKeyAdapter;
-import pl.cbr.games.snake.GameResources;
-import pl.cbr.games.snake.GameStatus;
+import pl.cbr.games.snake.*;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.MessagesConfig;
 import pl.cbr.games.snake.objects.player.Player;
@@ -18,7 +15,7 @@ public class BoardGraphics {
 
     private final GameConfig gameConfig;
     private final MessagesConfig messages;
-    private final GameResources gameResources;
+    private final ResourceLoader resourceLoader;
 
     private static final String FONT_TYPE = "Courier";
 
@@ -61,7 +58,7 @@ public class BoardGraphics {
     }
 
     private void printStartLogo(Graphics g, Board board) {
-        g.drawImage(gameResources.getStartLogo(), 0, 0, null);
+        g.drawImage(resourceLoader.get(GameResource.START_LOGO), 0, 0, null);
         printCenterText(g, board, Color.white, messages.getStartGame());
     }
 

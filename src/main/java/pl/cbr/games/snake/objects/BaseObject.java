@@ -2,7 +2,7 @@ package pl.cbr.games.snake.objects;
 
 import lombok.Data;
 import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.GameResources;
+import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
@@ -13,14 +13,14 @@ public abstract class BaseObject {
 
     public final BoardModel boardModel;
     public final GameConfig gameConfig;
-    public final GameResources gameResources;
+    public final ResourceLoader resourceLoader;
 
     final UUID uuid;
 
-    public BaseObject(BoardModel boardModel, GameConfig gameConfig, GameResources gameResources) {
+    public BaseObject(BoardModel boardModel, GameConfig gameConfig, ResourceLoader resourceLoader) {
         this.boardModel = boardModel;
         this.gameConfig = gameConfig;
-        this.gameResources = gameResources;
+        this.resourceLoader = resourceLoader;
         uuid = UUID.randomUUID();
     }
 
