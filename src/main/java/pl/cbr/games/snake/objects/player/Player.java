@@ -23,15 +23,11 @@ public class Player extends OnePointObject {
 
     private PlayerConfig playerConfig;
 
-	private int id;
     PlayerState playerState;
     private PlayerModel playerModel;
 
-    private static int idGenerator = 1;
-
     public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader) {
         super(gameConfig, boardModel, resourceLoader);
-        this.id = idGenerator++;
         this.playerConfig = playerConfig;
         playerModel = new PlayerModel(gameConfig);
     }
@@ -43,10 +39,6 @@ public class Player extends OnePointObject {
 
     public void move() {
         getPlayerModel().move(getPlayerState().getDirection());
-    }
-
-    public void moveBot() {
-
     }
 
     public Optional<OnePointObject> checkCollision() {
@@ -65,11 +57,6 @@ public class Player extends OnePointObject {
 
     public void keyPressed(KeyEvent e) {
         getPlayerState().keyPressed(e);
-    }
-
-    @Override
-    public Image getImage() {
-        return null;
     }
 
     @Override
@@ -92,11 +79,6 @@ public class Player extends OnePointObject {
 
     public boolean isBot() {
         return getPlayerConfig().getName().indexOf("Bot")==0;
-    }
-
-    @Override
-    public boolean isEndGame() {
-        return true;
     }
 
     @Override

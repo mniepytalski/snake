@@ -14,10 +14,7 @@ import pl.cbr.games.snake.objects.player.Player;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
-import javax.sound.sampled.*;
 import javax.swing.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -82,7 +79,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     public void doDrawing(Graphics g) {
-        calcBotMoves();
         if (gameStatus != GameStatus.NEXT_LEVEL && gameStatus != GameStatus.START_LOGO &&
                 boardModel.getPlayers().stream().noneMatch(player -> player.getPlayerState().isInGame())) {
             gameStatus = GameStatus.STOP;
@@ -102,9 +98,9 @@ public class Board extends JPanel implements ActionListener, Drawing {
                             if ( player.getPlayerModel().getPoints()>=levelScenarios.getLevel().getPointsToFinish() ) {
                                 levelScenarios.setNextLevel();
                                 gameStatus = GameStatus.NEXT_LEVEL;
-                                playSound("nextLevel");
+                                resourceLoader.playSound("nextLevel");
                             } else {
-                                playSound("eating1");
+                                resourceLoader.playSound("eating1");
                             }
                         }
                     }
@@ -127,25 +123,5 @@ public class Board extends JPanel implements ActionListener, Drawing {
             gameStatus = GameStatus.STOP;
             systemTimer.stop();
         }
-    }
-
-    private void playSound(String name) {
-        String soundName = "data/"+name+".wav";
-        try {
-            Class<?> cls = Class.forName("pl.cbr.games.snake.Board");
-            var cLoader = cls.getClassLoader();
-            URL url = cLoader.getResource(soundName);
-
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (UnsupportedAudioFileException | ClassNotFoundException | IOException | LineUnavailableException e) {
-            log.error("Problem with read audio file",e);
-        }
-    }
-
-    private void calcBotMoves() {
-        boardModel.getPlayers().stream().filter(Player::isBot).forEach(Player::moveBot);
     }
 }

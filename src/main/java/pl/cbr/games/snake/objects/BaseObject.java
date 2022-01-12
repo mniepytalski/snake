@@ -1,6 +1,7 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.Data;
+import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
@@ -24,7 +25,13 @@ public abstract class BaseObject {
         uuid = UUID.randomUUID();
     }
 
-    public abstract boolean isEndGame();
+    public boolean isEndGame() {
+        return true;
+    }
 
     public abstract void actionOnPlayerHit(PlayerModel playerModel);
+
+    public String toString() {
+        return "uuid:"+uuid;
+    }
 }

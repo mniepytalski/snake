@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.ResourcesConfig;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,9 +32,8 @@ public class ResourceLoader {
 
     private void loadImages() {
         try {
-            Class<?> cls = Class.forName("pl.cbr.games.snake.ResourceLoader");
+            Class<?> cls = Class.forName(getClass().getName());
             var cLoader = cls.getClassLoader();
-
             resources.put(GameResource.BALL0, getImage(cLoader, resourcesConfig.getBall0()));
             resources.put(GameResource.BALL1, getImage(cLoader, resourcesConfig.getBall1()));
             resources.put(GameResource.APPLE, getImage(cLoader, resourcesConfig.getApple()));
@@ -49,6 +50,22 @@ public class ResourceLoader {
         return resources.get(gameResource);
     }
 
+
+    public void playSound(String name) {
+        String soundName = IMAGES_DIR+name+".wav";
+        try {
+            Class<?> cls = Class.forName(getClass().getName());
+            var cLoader = cls.getClassLoader();
+            URL url = cLoader.getResource(soundName);
+
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | ClassNotFoundException | IOException | LineUnavailableException e) {
+            log.error("Problem with read audio file",e);
+        }
+    }
     private Image getImage(ClassLoader cLoader, String resourceName) {
         log.debug("read: {}", cLoader.getResource(IMAGES_DIR+resourceName));
         return (new ImageIcon(Objects.requireNonNull(

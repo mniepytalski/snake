@@ -112,13 +112,13 @@ public class MoveStrategyBase {
     boolean avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
         Point nextPosition = calcNextPosition();
-        Optional<OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
+        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getUuid());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 turnLeft(getStartDirection());
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
+                boardModel.checkCollisions(calcNextPosition(), player.getUuid()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 oppositeDirection();
@@ -140,13 +140,13 @@ public class MoveStrategyBase {
             turnRight();
         }
         Point nextPosition = calcNextPosition();
-        Optional<OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getId());
+        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getUuid());
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 oppositeDirection();
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition(), player.getId()).ifPresent(
+                boardModel.checkCollisions(calcNextPosition(), player.getUuid()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 setDirection(startDirection);

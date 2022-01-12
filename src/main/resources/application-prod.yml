@@ -1,6 +1,6 @@
-logging:
-  level:
-    root: INFO
+#logging:
+#  level:
+#    root: INFO
 
 game:
   dot-size: 20

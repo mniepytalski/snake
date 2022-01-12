@@ -21,7 +21,8 @@ public class BotPlayer extends Player {
     public void keyPressed(KeyEvent e) {
     }
 
-    public void moveBot() {
+    public void move() {
         mind.calculateMove();
+        super.move();
     }
 }

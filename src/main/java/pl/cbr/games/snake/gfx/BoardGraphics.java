@@ -79,6 +79,7 @@ public class BoardGraphics {
     }
 
     private void gameOver(Graphics g, Board board) {
+        printRunningBoard(g, board);
         printCenterText(g, board, Color.white, messages.getEndGame());
     }
 

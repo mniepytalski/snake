@@ -14,10 +14,7 @@ import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -75,24 +72,24 @@ public class BoardModel {
         return !detectDuplicates().isEmpty();
     }
 
-    public Optional<OnePointObject> checkCollisions(Player player) {
+    public Optional<? extends OnePointObject> checkCollisions(Player player) {
         Optional<Player> realPlayer = getPlayers().stream()
-                .filter(p -> p.getId() != player.getId())
+                .filter(p -> !p.getUuid().equals(player.getUuid()))
                 .filter(p -> Collision.check(p.getPlayerModel().getView(), player.getPlayerModel().getHead()))
                 .findFirst();
         if (realPlayer.isPresent()) {
-            return Optional.of(realPlayer.get());
+            return realPlayer;
         }
         return getObjects().stream().filter(wall -> player.getPlayerModel().getHead().equals(wall.getPosition())
         ).findFirst();
     }
 
-    public Optional<OnePointObject> checkCollisions(Point playerPosition, int objectId) {
-        Optional<Player> realPlayer = getPlayers().stream().filter(player -> player.getId() != objectId)
+    public Optional<? extends OnePointObject> checkCollisions(Point playerPosition, UUID objectId) {
+        Optional<Player> realPlayer = getPlayers().stream().filter(player -> !player.getUuid().equals(objectId))
                 .filter(player -> Collision.check(player.getPlayerModel().getView(), playerPosition))
                 .findFirst();
         if (realPlayer.isPresent()) {
-            return Optional.of(realPlayer.get());
+            return realPlayer;
         }
         if (board.isOutside(playerPosition)) {
             return Optional.of(new RectObject(gameConfig, resourceLoader, null));

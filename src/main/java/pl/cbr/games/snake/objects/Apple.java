@@ -1,6 +1,6 @@
 package pl.cbr.games.snake.objects;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResource;
@@ -10,7 +10,7 @@ import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.awt.*;
 
-@Slf4j
+@ToString(callSuper = true)
 public class Apple extends OnePointObject implements Drawing {
 
     public Apple(GameConfig gameConfig, ResourceLoader resourceLoader, BoardModel boardModel) {
@@ -31,9 +31,5 @@ public class Apple extends OnePointObject implements Drawing {
     public void actionOnPlayerHit(PlayerModel playerModel) {
         playerModel.addLength(5);
         super.actionOnPlayerHit(playerModel);
-    }
-
-    public String toString() {
-        return "apple"+super.toString();
     }
 }

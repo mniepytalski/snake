@@ -1,9 +1,9 @@
 package pl.cbr.games.snake.objects;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.ResourceLoader;
@@ -15,7 +15,8 @@ import java.awt.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public abstract class OnePointObject extends BaseObject implements Drawing {
 
     private Point position;
@@ -33,7 +34,9 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
         position.set(point);
     }
 
-    public abstract Image getImage();
+    public Image getImage() {
+        return null;
+    }
 
     public void doDrawing(Graphics g) {
         Point position = getPosition().multiply(gameConfig.getDotSize());
@@ -47,9 +50,5 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
                 break;
             }
         }
-    }
-
-    public String toString() {
-        return position.toString();
     }
 }
