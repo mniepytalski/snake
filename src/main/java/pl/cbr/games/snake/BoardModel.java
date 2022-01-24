@@ -14,7 +14,6 @@ import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
-import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
