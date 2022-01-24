@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import pl.cbr.games.snake.config.Messages;
 
 import javax.swing.*;
 

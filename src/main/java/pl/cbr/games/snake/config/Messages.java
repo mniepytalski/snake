@@ -1,4 +1,4 @@
-package pl.cbr.games.snake;
+package pl.cbr.games.snake.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

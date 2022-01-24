@@ -9,10 +9,12 @@ import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
+import pl.cbr.games.snake.geom2d.Square;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,9 +55,11 @@ public class BoardModel {
         for (int i = 0; i < level.getBots(); i++) {
             addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, resourceLoader));
         }
+        List<Square> forbiddenAreas = getPlayers().stream().map(Player::getPlayerConfig).map(PlayerConfig::getPosition)
+                .map(PositionConfig::getPoint).map(point -> new Square(point,5)).collect(Collectors.toList());
 
         objects.forEach(OnePointObject::setRandomPosition);
-        tryingToChangeDuplicatePosition();
+        tryingToChangeDuplicatePosition(forbiddenAreas);
     }
 
     private void clearBots() {
@@ -98,7 +102,7 @@ public class BoardModel {
         ).findFirst();
     }
 
-    private void tryingToChangeDuplicatePosition() {
+    private void tryingToChangeDuplicatePosition(List<Square> forbiddenAreas) {
         int attempt = 1;
         int duplicates = getDuplicatesAndChangePosition();
         for (int x = 0; x < 200; x++) {
@@ -109,8 +113,9 @@ public class BoardModel {
                 break;
             }
         }
+        int forbiddenAreasCount = changePositionFromForbiddenAreas(forbiddenAreas);
         if (duplicates > 0) {
-            log.info("{} init objects:{}, duplicates:{}", attempt, objects.size(), duplicates);
+            log.info("{} init objects:{}, duplicates:{}, forbidden:{}", attempt, objects.size(), duplicates, forbiddenAreasCount);
         }
     }
 
@@ -118,6 +123,15 @@ public class BoardModel {
         Map<Point, List<OnePointObject>> duplicates = detectDuplicates();
         duplicates.forEach((k,v) -> v.stream().skip(1).forEach(OnePointObject::setRandomPosition));
         return duplicates.size();
+    }
+
+    private int changePositionFromForbiddenAreas(List<Square> forbiddenAreas) {
+        List<OnePointObject> pointsToChange = new ArrayList<>();
+        forbiddenAreas.forEach(area ->
+            pointsToChange.addAll(objects.stream().filter(p -> area.isInside(p.getPosition())).collect(Collectors.toList()))
+        );
+        pointsToChange.forEach(OnePointObject::setRandomPosition);
+        return pointsToChange.size();
     }
 
     private Map<Point, List<OnePointObject>> detectDuplicates() {

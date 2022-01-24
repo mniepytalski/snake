@@ -15,4 +15,8 @@ public class Rectangle {
                 || point.getX() < leftTop.getX()
                 || point.getX() >= rightBottom.getX();
     }
+
+    public boolean isInside(Point point) {
+        return !isOutside(point);
+    }
 }

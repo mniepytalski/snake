@@ -20,8 +20,16 @@ public class Point {
         return new Point(x + a.getX(), y + a.getY());
     }
 
+    public Point add(int value) {
+        return new Point(x + value, y + value);
+    }
+
     public Point minus(Point a) {
         return new Point(x - a.getX(), y - a.getY());
+    }
+
+    public Point minus(int value) {
+        return new Point(x - value, y - value);
     }
 
     public void set(Point a) {
