@@ -10,7 +10,7 @@
     </parent>
     <groupId>pl.cbr</groupId>
     <artifactId>snake</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>snake</name>
     <description>Spring and swing</description>
     <properties>
@@ -92,13 +92,6 @@
                             </resources>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
                     <execution>
                         <id>copy-executable01</id>
                         <phase>package</phase>
