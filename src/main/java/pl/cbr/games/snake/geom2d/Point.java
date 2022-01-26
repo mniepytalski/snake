@@ -12,8 +12,11 @@ public class Point {
     private int y;
 
     public Point(Point point) {
-        x = point.getX();
-        y = point.getY();
+        this(point.getX(), point.getY());
+    }
+
+    public static Point get(int x, int y) {
+        return new Point(x, y);
     }
 
     public Point add(Point a) {

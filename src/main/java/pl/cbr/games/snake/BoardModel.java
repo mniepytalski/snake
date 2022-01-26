@@ -125,10 +125,8 @@ public class BoardModel {
     }
 
     private int changePositionFromForbiddenAreas(List<Square> forbiddenAreas) {
-        List<OnePointObject> pointsToChange = new ArrayList<>();
-        forbiddenAreas.forEach(area ->
-            pointsToChange.addAll(objects.stream().filter(p -> area.isInside(p.getPosition())).collect(Collectors.toList()))
-        );
+        List<OnePointObject> pointsToChange = objects.stream().filter(p ->
+                forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).collect(Collectors.toList());
         pointsToChange.forEach(OnePointObject::setRandomPosition);
         return pointsToChange.size();
     }
