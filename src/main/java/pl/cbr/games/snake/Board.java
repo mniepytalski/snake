@@ -56,7 +56,6 @@ public class Board extends JPanel implements ActionListener, Drawing {
     public void initGame() {
         initLevel();
         boardModel.getPlayers().forEach(Player::initPlayer);
-        systemTimer.start();
     }
 
     private void initLevel() {
@@ -106,8 +105,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                         }
                     }
             );
-            Optional<OnePointObject> collisionStatus = player.checkCollision();
-            collisionStatus.ifPresent(boardObject -> actionOnCollision(player, boardObject));
+            player.checkCollision().ifPresent(boardObject -> actionOnCollision(player, boardObject));
             if ( GameStatus.RUNNING == gameStatus ) {
                 player.move();
             }
@@ -116,13 +114,15 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     private void actionOnCollision(Player player, OnePointObject collisionObject) {
+        if ( gameStatus == GameStatus.STOP )
+            return;
         log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
         if (player.isBot()) {
             player.initPlayer();
         } else {
+            getBoardModel().setCollisionPoint(Optional.of(collisionObject));
             gameStatus = GameStatus.STOP;
-            systemTimer.stop();
         }
     }
 }

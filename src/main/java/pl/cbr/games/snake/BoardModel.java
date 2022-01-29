@@ -33,6 +33,8 @@ public class BoardModel {
     private final List<OnePointObject> objects;
     private final List<Player> players;
 
+    private Optional<OnePointObject> collisionPoint;
+
     public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader) {
         this.gameConfig = gameConfig;
         this.resourceLoader = resourceLoader;
@@ -59,6 +61,7 @@ public class BoardModel {
 
         objects.forEach(OnePointObject::setRandomPosition);
         tryingToChangeDuplicatePosition(forbiddenAreas);
+        collisionPoint = Optional.empty();
     }
 
     private void clearBots() {

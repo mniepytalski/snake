@@ -78,8 +78,12 @@ public class BoardGraphics {
         }
     }
 
+    int counter = 0;
     private void gameOver(Graphics g, Board board) {
         printRunningBoard(g, board);
+        board.getBoardModel().getCollisionPoint().ifPresent(p -> {
+            if ( counter++%2==0 ) p.doDrawing(g);
+        });
         printCenterText(g, board, Color.white, messages.getEndGame());
     }
 
