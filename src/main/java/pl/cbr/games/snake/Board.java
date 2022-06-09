@@ -46,6 +46,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     private void initBoard() {
+        addKeyListener(new BoardKeyAdapter(this));
         boardGraphics.init(this);
         systemTimer.init(this);
         systemTimer.start();

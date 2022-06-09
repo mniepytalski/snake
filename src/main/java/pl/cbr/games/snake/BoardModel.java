@@ -91,7 +91,7 @@ public class BoardModel {
     }
 
     public Optional<? extends OnePointObject> checkCollisions(Point playerPosition, UUID objectId) {
-        Optional<Player> realPlayer = getPlayers().stream().filter(player -> !player.getUuid().equals(objectId))
+        Optional<Player> realPlayer = getPlayers().stream()
                 .filter(player -> Collision.check(player.getPlayerModel().getView(), playerPosition))
                 .findFirst();
         if (realPlayer.isPresent()) {

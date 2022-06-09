@@ -30,7 +30,6 @@ public class BoardGraphics {
     }
 
     public void init(Board board) {
-        board.addKeyListener(new BoardKeyAdapter(board));
         board.setBackground(Color.black);
         board.setFocusable(true);
         Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
