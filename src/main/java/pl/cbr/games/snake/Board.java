@@ -40,7 +40,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
     private void init() {
         gameModel.setStatus(GameStatus.RUNNING);
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, resourceLoader, gfx)));
+        this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, gfx)));
         addKeyListener(new BoardKeyAdapter(this));
         boardGraphics.init(this);
         systemTimer.init(this);

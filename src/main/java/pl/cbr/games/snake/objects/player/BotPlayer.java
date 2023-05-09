@@ -1,7 +1,6 @@
 package pl.cbr.games.snake.objects.player;
 
 import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.gfx.GameGraphics;
@@ -13,9 +12,8 @@ public class BotPlayer extends Player {
 
     private final MoveStrategy mind;
 
-    public BotPlayer(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader,
-                     GameGraphics gfx) {
-        super(boardModel, playerConfig, gameConfig, resourceLoader, gfx);
+    public BotPlayer(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, GameGraphics gfx) {
+        super(boardModel, playerConfig, gameConfig, gfx);
         playerState = new PlayerState();
         mind = new MoveStrategy( this, boardModel);
     }

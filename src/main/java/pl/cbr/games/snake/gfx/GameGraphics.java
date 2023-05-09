@@ -17,4 +17,8 @@ public class GameGraphics {
     public void drawImage(Graphics g, GameResource resource, Point2D point) {
         g.drawImage(resourceLoader.get(resource), point.getX(), point.getY(), null);
     }
+
+    public void drawImage(Graphics g, Image image, Point2D point) {
+        g.drawImage(image, point.getX(), point.getY(), null);
+    }
 }

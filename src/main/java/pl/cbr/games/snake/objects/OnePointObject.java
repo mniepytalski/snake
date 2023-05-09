@@ -6,9 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
-import pl.cbr.games.snake.ResourceLoader;
+import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.geom2d.Point2D;
+import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.awt.*;
@@ -21,8 +22,8 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
 
     private Point2D position;
 
-    protected OnePointObject(GameConfig gameConfig, BoardModel boardModel, ResourceLoader resourceLoader) {
-        super(boardModel, gameConfig, resourceLoader);
+    protected OnePointObject(GameConfig gameConfig, BoardModel boardModel, GameGraphics gfx) {
+        super(boardModel, gameConfig, gfx);
         this.position = new Point2D();
     }
 
@@ -34,13 +35,13 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
         position.set(point);
     }
 
-    public Image getImage() {
+    public GameResource getImage() {
         return null;
     }
 
     public void doDrawing(Graphics g) {
         Point2D position = getPosition().multiply(gameConfig.getDotSize());
-        g.drawImage(getImage(), position.getX(), position.getY(), null);
+        gfx.drawImage(g, getImage(), position);
     }
 
     public void actionOnPlayerHit(PlayerModel playerModel) {

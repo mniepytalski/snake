@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.GameResource;
-import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Point2D;
@@ -26,9 +25,8 @@ public class Player extends OnePointObject {
     private final PlayerModel playerModel;
     private final GameGraphics gfx;
 
-    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader,
-                  GameGraphics gfx) {
-        super(gameConfig, boardModel, resourceLoader);
+    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, GameGraphics gfx) {
+        super(gameConfig, boardModel, gfx);
         this.gfx = gfx;
         playerModel = new PlayerModel(gameConfig, playerConfig);
     }
@@ -45,13 +43,13 @@ public class Player extends OnePointObject {
     public Optional<OnePointObject> checkCollision() {
         if ( getPlayerModel().checkOurselfCollision() ) {
             getPlayerState().setInGame(false);
-            return Optional.of(new PlayerObject(gameConfig, resourceLoader, null));
+            return Optional.of(new PlayerObject(gameConfig, null, gfx));
         }
         Rectangle boardRectangle = new Rectangle(new Point2D(),
                 (new Point2D(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
         if (getPlayerModel().isOutside(boardRectangle)) {
             getPlayerState().setInGame(false);
-            return Optional.of(new RectObject(gameConfig, resourceLoader, null));
+            return Optional.of(new RectObject(gameConfig,  null, gfx));
         }
         return Optional.empty();
     }
