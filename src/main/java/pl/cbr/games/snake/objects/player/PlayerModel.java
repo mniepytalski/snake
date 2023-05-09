@@ -4,7 +4,7 @@ import lombok.Getter;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Collision;
-import pl.cbr.games.snake.geom2d.Point;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.geom2d.Rectangle;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class PlayerModel {
     private int length;
-    private final List<Point> view;
+    private final List<Point2D> view;
     private final GameConfig gameConfig;
 
     private final PlayerConfig playerConfig;
@@ -29,15 +29,15 @@ public class PlayerModel {
     }
 
     public void initPlayer() {
-        Point startPosition = playerConfig.getPosition().getPoint();
+        Point2D startPosition = playerConfig.getPosition().getPoint();
         view.clear();
         this.length = gameConfig.getDotsOnStart();
         initPlayerView(startPosition);
     }
 
-    private void initPlayerView(Point startPosition) {
+    private void initPlayerView(Point2D startPosition) {
         for (int z = 0; z < getLength(); z++) {
-            view.add((new Point(startPosition.getX() - z, startPosition.getY())));
+            view.add((new Point2D(startPosition.getX() - z, startPosition.getY())));
         }
         points = 0;
     }
@@ -79,15 +79,15 @@ public class PlayerModel {
         this.length = value;
     }
 
-    public Point get(int z) {
+    public Point2D get(int z) {
         return view.get(z);
     }
 
-    public Point getHead() {
+    public Point2D getHead() {
         return view.get(0);
     }
 
-    private void addHead(Point point) {
+    private void addHead(Point2D point) {
         view.add(0,point);
     }
 }

@@ -18,20 +18,19 @@ public class BoardKeyAdapter extends KeyAdapter {
         switch(e.getKeyCode()) {
             case KeyEvent.VK_R -> startLogic();
             case KeyEvent.VK_P -> pauseLogic();
-            case KeyEvent.VK_B -> board.setDebug(!board.isDebug());
         }
-        log.debug("{} key, debug: {}",(new StringBuffer()).append(e.getKeyChar()), board.isDebug());
+        log.debug("{} key",(new StringBuffer()).append(e.getKeyChar()));
     }
 
     private void startLogic() {
-        board.setGameStatus(GameStatus.RUNNING);
+        board.getGameModel().setStatus(GameStatus.RUNNING);
         board.initGame();
     }
 
     private void pauseLogic() {
-        switch(board.getGameStatus()) {
-            case PAUSED -> board.setGameStatus(GameStatus.RUNNING);
-            case RUNNING -> board.setGameStatus(GameStatus.PAUSED);
+        switch(board.getGameModel().getStatus()) {
+            case PAUSED -> board.getGameModel().setStatus(GameStatus.RUNNING);
+            case RUNNING -> board.getGameModel().setStatus(GameStatus.PAUSED);
         }
     }
 }

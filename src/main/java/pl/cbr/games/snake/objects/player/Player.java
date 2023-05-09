@@ -8,8 +8,9 @@ import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.ResourceLoader;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.geom2d.Point;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.geom2d.Rectangle;
+import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.objects.*;
 
 import java.awt.*;
@@ -23,9 +24,12 @@ public class Player extends OnePointObject {
 
     PlayerState playerState;
     private final PlayerModel playerModel;
+    private final GameGraphics gfx;
 
-    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader) {
+    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader,
+                  GameGraphics gfx) {
         super(gameConfig, boardModel, resourceLoader);
+        this.gfx = gfx;
         playerModel = new PlayerModel(gameConfig, playerConfig);
     }
 
@@ -43,8 +47,8 @@ public class Player extends OnePointObject {
             getPlayerState().setInGame(false);
             return Optional.of(new PlayerObject(gameConfig, resourceLoader, null));
         }
-        Rectangle boardRectangle = new Rectangle(new Point(),
-                (new Point(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
+        Rectangle boardRectangle = new Rectangle(new Point2D(),
+                (new Point2D(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
         if (getPlayerModel().isOutside(boardRectangle)) {
             getPlayerState().setInGame(false);
             return Optional.of(new RectObject(gameConfig, resourceLoader, null));
@@ -58,14 +62,12 @@ public class Player extends OnePointObject {
 
     @Override
     public void doDrawing(Graphics g) {
-        Image ball = isBot() ? resourceLoader.get(GameResource.BALL0) : resourceLoader.get(GameResource.BALL1);
-        for (int z = 0; z < getPlayerModel().getViewSize(); z++) {
-            Point point = getPlayerModel().get(z).multiply(gameConfig.getDotSize());
-            if (z == 0) {
-                g.drawImage(resourceLoader.get(GameResource.HEAD),  point.getX(), point.getY(), null);
-            } else {
-                g.drawImage(ball, point.getX(), point.getY(), null);
-            }
+        GameResource ballResource = isBot() ? GameResource.BALL0 : GameResource.BALL1;
+        Point2D startPoint = getPlayerModel().get(0).multiply(gameConfig.getDotSize());
+        gfx.drawImage(g, GameResource.HEAD,  startPoint);
+        for (int z = 1; z < getPlayerModel().getViewSize(); z++) {
+            Point2D point = getPlayerModel().get(z).multiply(gameConfig.getDotSize());
+            gfx.drawImage(g, ballResource, point);
         }
     }
 

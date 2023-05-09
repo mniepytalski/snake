@@ -3,7 +3,7 @@ package pl.cbr.games.snake.objects.player.mind;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.geom2d.Point;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.DirectionService;
@@ -75,19 +75,19 @@ public class MoveStrategyBase {
         return player.getPlayerState().getDirection();
     }
 
-    Point calcNextPosition() {
+    Point2D calcNextPosition() {
         return calcNextPosition(player.getPlayerModel().getHead());
     }
 
-    Point calcNextPosition(Point nextPosition) {
+    Point2D calcNextPosition(Point2D nextPosition) {
         DirectionService directionService = new DirectionService();
-        Point moveVector = directionService.getVector(player.getPlayerState().getDirection());
+        Point2D moveVector = directionService.getVector(player.getPlayerState().getDirection());
         return nextPosition.add(moveVector);
     }
 
     void avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
-        Point nextPosition = calcNextPosition();
+        Point2D nextPosition = calcNextPosition();
         Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
@@ -113,7 +113,7 @@ public class MoveStrategyBase {
         } else {
             turnRight();
         }
-        Point nextPosition = calcNextPosition();
+        Point2D nextPosition = calcNextPosition();
         Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {

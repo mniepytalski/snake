@@ -8,21 +8,21 @@ import java.util.stream.Collectors;
 
 public class Collision {
 
-    public static boolean check(List<Point> points) {
-        Set<Point> allItems = new HashSet<>();
-        Set<Point> duplicates = points.stream().filter(n -> !allItems.add(n)).collect(Collectors.toSet());
+    public static boolean check(List<Point2D> points) {
+        Set<Point2D> allItems = new HashSet<>();
+        Set<Point2D> duplicates = points.stream().filter(n -> !allItems.add(n)).collect(Collectors.toSet());
         return !duplicates.isEmpty();
     }
 
-    public static boolean check(List<Point> points, Point point) {
-        List<Point> pointsToCheck = new ArrayList<>(points);
+    public static boolean check(List<Point2D> points, Point2D point) {
+        List<Point2D> pointsToCheck = new ArrayList<>(points);
         pointsToCheck.add(point);
-        Set<Point> allItems = new HashSet<>();
+        Set<Point2D> allItems = new HashSet<>();
         return !pointsToCheck.stream().filter(n -> !allItems.add(n)).collect(Collectors.toSet()).isEmpty();
     }
 
-    public static boolean check(List<Point> points1, List<Point> points2) {
-        Set<Point> allItems = new HashSet<>(points1);
+    public static boolean check(List<Point2D> points1, List<Point2D> points2) {
+        Set<Point2D> allItems = new HashSet<>(points1);
         return !points2.stream().filter(n -> !allItems.add(n)).collect(Collectors.toSet()).isEmpty();
     }
 }

@@ -7,9 +7,10 @@ import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.geom2d.Collision;
-import pl.cbr.games.snake.geom2d.Point;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.geom2d.Rectangle;
 import pl.cbr.games.snake.geom2d.Square;
+import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
@@ -29,6 +30,7 @@ public class BoardModel {
 
     private final GameConfig gameConfig;
     private final ResourceLoader resourceLoader;
+    private final GameGraphics gfx;
     private final Rectangle board;
 
     private final List<OnePointObject> objects = new ArrayList<>();
@@ -36,12 +38,12 @@ public class BoardModel {
 
     private Optional<OnePointObject> collisionPoint;
 
-    public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader) {
+    public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader, GameGraphics gfx) {
         this.gameConfig = gameConfig;
         this.resourceLoader = resourceLoader;
-
-        board = new Rectangle(new Point(),
-                (new Point(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
+        this.gfx = gfx;
+        board = new Rectangle(new Point2D(),
+                (new Point2D(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
     }
 
     public void init(Level level) {
@@ -52,12 +54,14 @@ public class BoardModel {
 
         clearBots();
         for (int i = 0; i < level.getBots(); i++) {
-            addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, resourceLoader));
+            addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, resourceLoader, gfx));
         }
-        List<Square> forbiddenAreas = getPlayers().stream().map(Player::getPlayerModel)
+        List<Square> forbiddenAreas = getPlayers().stream()
+                .map(Player::getPlayerModel)
                 .map(PlayerModel::getPlayerConfig)
                 .map(PlayerConfig::getPosition)
-                .map(PositionConfig::getPoint).map(point -> new Square(point,5)).collect(Collectors.toList());
+                .map(PositionConfig::getPoint)
+                .map(point -> new Square(point,5)).collect(Collectors.toList());
 
         objects.forEach(OnePointObject::setRandomPosition);
         tryingToChangeDuplicatePosition(forbiddenAreas);
@@ -90,7 +94,7 @@ public class BoardModel {
         ).findFirst();
     }
 
-    public Optional<? extends OnePointObject> checkCollisions(Point playerPosition) {
+    public Optional<? extends OnePointObject> checkCollisions(Point2D playerPosition) {
         Optional<Player> realPlayer = getPlayers().stream()
                 .filter(player -> Collision.check(player.getPlayerModel().getView(), playerPosition))
                 .findFirst();
@@ -121,7 +125,7 @@ public class BoardModel {
     }
 
     private int getDuplicatesAndChangePosition() {
-        Map<Point, List<OnePointObject>> duplicates = detectDuplicates();
+        Map<Point2D, List<OnePointObject>> duplicates = detectDuplicates();
         duplicates.forEach((k,v) -> v.stream().skip(1).forEach(OnePointObject::setRandomPosition));
         return duplicates.size();
     }
@@ -133,7 +137,7 @@ public class BoardModel {
         return pointsToChange.size();
     }
 
-    private Map<Point, List<OnePointObject>> detectDuplicates() {
+    private Map<Point2D, List<OnePointObject>> detectDuplicates() {
         return objects.stream()
                 .collect(
                         collectingAndThen(

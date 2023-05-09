@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.*;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.MessagesConfig;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.player.Player;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ public class BoardGraphics {
     private final GameConfig gameConfig;
     private final MessagesConfig messages;
     private final ResourceLoader resourceLoader;
+    private final GameGraphics gfx;
 
     private static final String FONT_TYPE = "Courier";
 
@@ -47,7 +49,7 @@ public class BoardGraphics {
     }
 
     private void printStartLogo(Graphics g, Board board) {
-        g.drawImage(resourceLoader.get(GameResource.START_LOGO), 0, 0, null);
+        gfx.drawImage(g, GameResource.START_LOGO, Point2D.get(0, 0));
         printCenterText(g, board, Color.white, messages.getStartGame());
     }
 
