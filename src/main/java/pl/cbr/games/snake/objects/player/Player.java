@@ -32,7 +32,7 @@ public class Player extends OnePointObject {
         playerModel = new PlayerModel(gameConfig);
     }
 
-    public void initPlayer() {
+    public void init() {
         playerModel.initPlayer(playerConfig.getPosition().getPoint());
         playerState.initState();
     }

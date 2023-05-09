@@ -42,10 +42,10 @@ public class Board extends JPanel implements ActionListener, Drawing {
         this.resourceLoader = resourceLoader;
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
         this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, resourceLoader)));
-        initBoard();
+        init();
     }
 
-    private void initBoard() {
+    private void init() {
         addKeyListener(new BoardKeyAdapter(this));
         boardGraphics.init(this);
         systemTimer.init(this);
@@ -56,7 +56,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
 
     public void initGame() {
         initLevel();
-        boardModel.getPlayers().forEach(Player::initPlayer);
+        boardModel.getPlayers().forEach(Player::init);
     }
 
     private void initLevel() {
@@ -67,14 +67,10 @@ public class Board extends JPanel implements ActionListener, Drawing {
     public void paintComponent(Graphics g) {
         log.debug("paintComponent, gameStatus:{}, timer:{}", gameStatus, systemTimer.isRunning());
         switch (gameStatus) {
-            case RUNNING:
-            case PAUSED:
-            case NEXT_LEVEL:
-            case START_LOGO:
-            case STOP:
+            case RUNNING, PAUSED, NEXT_LEVEL, START_LOGO, STOP -> {
                 super.paintComponent(g);
                 doDrawing(g);
-                break;
+            }
         }
     }
 
@@ -120,7 +116,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         log.warn("collision: {} -> {}, {}, {}", player.getPlayerConfig().getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
         if (player.isBot()) {
-            player.initPlayer();
+            player.init();
         } else {
             getBoardModel().setCollisionPoint(Optional.of(collisionObject));
             gameStatus = GameStatus.STOP;

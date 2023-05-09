@@ -38,21 +38,11 @@ public class BoardGraphics {
 
     public void printBoard(GameStatus gameStatus, Graphics g, Board board) {
         switch(gameStatus) {
-            case START_LOGO:
-                printStartLogo(g, board);
-                break;
-            case RUNNING:
-                printRunningBoard(g, board);
-                break;
-            case STOP:
-                gameOver(g, board);
-                break;
-            case PAUSED:
-                gamePaused(g, board);
-                break;
-            case NEXT_LEVEL:
-                nextLevel(g, board);
-                break;
+            case START_LOGO -> printStartLogo(g, board);
+            case RUNNING -> printRunningBoard(g, board);
+            case STOP -> gameOver(g, board);
+            case PAUSED -> gamePaused(g, board);
+            case NEXT_LEVEL -> nextLevel(g, board);
         }
     }
 

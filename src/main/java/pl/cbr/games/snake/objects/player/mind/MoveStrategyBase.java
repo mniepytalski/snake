@@ -38,18 +38,10 @@ public class MoveStrategyBase {
 
     void oppositeDirection() {
         switch(player.getPlayerState().getDirection()) {
-            case RIGHT:
-                setDirection(MoveDirection.LEFT);
-                break;
-            case DOWN:
-                setDirection(MoveDirection.UP);
-                break;
-            case LEFT:
-                setDirection(MoveDirection.RIGHT);
-                break;
-            case UP:
-                setDirection(MoveDirection.DOWN);
-                break;
+            case RIGHT -> setDirection(MoveDirection.LEFT);
+            case DOWN -> setDirection(MoveDirection.UP);
+            case LEFT -> setDirection(MoveDirection.RIGHT);
+            case UP -> setDirection(MoveDirection.DOWN);
         }
         youCanMove();
     }
@@ -57,36 +49,20 @@ public class MoveStrategyBase {
     void turnLeft(MoveDirection startDirection) {
         this.startDirection = startDirection;
         switch(player.getPlayerState().getDirection()) {
-            case RIGHT:
-                setDirection(MoveDirection.UP);
-                break;
-            case DOWN:
-                setDirection(MoveDirection.RIGHT);
-                break;
-            case LEFT:
-                setDirection(MoveDirection.DOWN);
-                break;
-            case UP:
-                setDirection(MoveDirection.LEFT);
-                break;
+            case RIGHT -> setDirection(MoveDirection.UP);
+            case DOWN -> setDirection(MoveDirection.RIGHT);
+            case LEFT -> setDirection(MoveDirection.DOWN);
+            case UP -> setDirection(MoveDirection.LEFT);
         }
         youCanMove();
     }
 
     void turnRight() {
         switch(player.getPlayerState().getDirection()) {
-            case RIGHT:
-                setDirection(MoveDirection.DOWN);
-                break;
-            case DOWN:
-                setDirection(MoveDirection.LEFT);
-                break;
-            case LEFT:
-                setDirection(MoveDirection.UP);
-                break;
-            case UP:
-                setDirection(MoveDirection.RIGHT);
-                break;
+            case RIGHT -> setDirection(MoveDirection.DOWN);
+            case DOWN -> setDirection(MoveDirection.LEFT);
+            case LEFT -> setDirection(MoveDirection.UP);
+            case UP -> setDirection(MoveDirection.RIGHT);
         }
         youCanMove();
     }
@@ -109,7 +85,7 @@ public class MoveStrategyBase {
         return nextPosition.add(moveVector);
     }
 
-    boolean avoidingObstacles() {
+    void avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
         Point nextPosition = calcNextPosition();
         Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getUuid());
@@ -126,13 +102,11 @@ public class MoveStrategyBase {
                             }
                         }
                 );
-                return true;
             }
         }
-        return false;
     }
 
-    boolean changeDirectionIfPossible() {
+    void changeDirectionIfPossible() {
         startDirection = player.getPlayerState().getDirection();
         if (Math.random() > 0.5) {
             turnLeft(startDirection);
@@ -154,9 +128,7 @@ public class MoveStrategyBase {
                             }
                         }
                 );
-                return true;
             }
         }
-        return false;
     }
 }
