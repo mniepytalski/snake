@@ -32,10 +32,6 @@ public class MoveStrategyBase {
         return counter++ > moveDelay + (Math.random()*100);
     }
 
-    void youCanMove() {
-        counter = 0;
-    }
-
     void oppositeDirection() {
         switch(player.getPlayerState().getDirection()) {
             case RIGHT -> setDirection(MoveDirection.LEFT);
@@ -67,6 +63,10 @@ public class MoveStrategyBase {
         youCanMove();
     }
 
+    private void youCanMove() {
+        counter = 0;
+    }
+
     private void setDirection(MoveDirection direction) {
         player.getPlayerState().setDirection(direction);
     }
@@ -88,13 +88,13 @@ public class MoveStrategyBase {
     void avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
         Point nextPosition = calcNextPosition();
-        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getUuid());
+        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 turnLeft(getStartDirection());
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition(), player.getUuid()).ifPresent(
+                boardModel.checkCollisions(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 oppositeDirection();
@@ -114,13 +114,13 @@ public class MoveStrategyBase {
             turnRight();
         }
         Point nextPosition = calcNextPosition();
-        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition, player.getUuid());
+        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 oppositeDirection();
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition(), player.getUuid()).ifPresent(
+                boardModel.checkCollisions(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 setDirection(startDirection);

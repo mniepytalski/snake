@@ -21,19 +21,16 @@ import java.util.Optional;
 @Setter
 public class Player extends OnePointObject {
 
-    private PlayerConfig playerConfig;
-
     PlayerState playerState;
-    private PlayerModel playerModel;
+    private final PlayerModel playerModel;
 
     public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, ResourceLoader resourceLoader) {
         super(gameConfig, boardModel, resourceLoader);
-        this.playerConfig = playerConfig;
-        playerModel = new PlayerModel(gameConfig);
+        playerModel = new PlayerModel(gameConfig, playerConfig);
     }
 
     public void init() {
-        playerModel.initPlayer(playerConfig.getPosition().getPoint());
+        playerModel.initPlayer();
         playerState.initState();
     }
 
@@ -74,11 +71,15 @@ public class Player extends OnePointObject {
 
     public void printPoints(Graphics g, int id) {
         g.setColor(Color.LIGHT_GRAY);
-        g.drawString(playerConfig.getName()+": "+getPlayerModel().getPoints(),10,14*id);
+        g.drawString(getPlayerModel().getName()+": "+getPlayerModel().getPoints(),10,14*id);
     }
 
     public boolean isBot() {
-        return getPlayerConfig().getName().indexOf("Bot")==0;
+        return getName().indexOf("Bot")==0;
+    }
+
+    public String getName() {
+        return getPlayerModel().getName();
     }
 
     @Override

@@ -2,6 +2,7 @@ package pl.cbr.games.snake.objects.player;
 
 import lombok.Getter;
 import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point;
 import pl.cbr.games.snake.geom2d.Rectangle;
@@ -14,16 +15,21 @@ public class PlayerModel {
     private int length;
     private final List<Point> view;
     private final GameConfig gameConfig;
+
+    private final PlayerConfig playerConfig;
+
     private final DirectionService directionService;
     private int points;
 
-    public PlayerModel(GameConfig gameConfig) {
+    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig) {
         view = new ArrayList<>();
         this.gameConfig = gameConfig;
+        this.playerConfig = playerConfig;
         directionService = new DirectionService();
     }
 
-    public void initPlayer(Point startPosition) {
+    public void initPlayer() {
+        Point startPosition = playerConfig.getPosition().getPoint();
         view.clear();
         this.length = gameConfig.getDotsOnStart();
         initPlayerView(startPosition);
@@ -34,6 +40,10 @@ public class PlayerModel {
             view.add((new Point(startPosition.getX() - z, startPosition.getY())));
         }
         points = 0;
+    }
+
+    public String getName() {
+        return getPlayerConfig().getName();
     }
 
     public void move(MoveDirection direction) {
@@ -53,8 +63,7 @@ public class PlayerModel {
     }
 
     public boolean checkOurselfCollision() {
-        Collision collision = new Collision();
-        return collision.check(view);
+        return Collision.check(view);
     }
 
     public boolean isOutside(Rectangle boardModel) {

@@ -14,6 +14,7 @@ import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,17 +31,14 @@ public class BoardModel {
     private final ResourceLoader resourceLoader;
     private final Rectangle board;
 
-    private final List<OnePointObject> objects;
-    private final List<Player> players;
+    private final List<OnePointObject> objects = new ArrayList<>();
+    private final List<Player> players= new ArrayList<>();
 
     private Optional<OnePointObject> collisionPoint;
 
     public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader) {
         this.gameConfig = gameConfig;
         this.resourceLoader = resourceLoader;
-
-        objects = new ArrayList<>();
-        players = new ArrayList<>();
 
         board = new Rectangle(new Point(),
                 (new Point(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
@@ -56,7 +54,9 @@ public class BoardModel {
         for (int i = 0; i < level.getBots(); i++) {
             addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, resourceLoader));
         }
-        List<Square> forbiddenAreas = getPlayers().stream().map(Player::getPlayerConfig).map(PlayerConfig::getPosition)
+        List<Square> forbiddenAreas = getPlayers().stream().map(Player::getPlayerModel)
+                .map(PlayerModel::getPlayerConfig)
+                .map(PlayerConfig::getPosition)
                 .map(PositionConfig::getPoint).map(point -> new Square(point,5)).collect(Collectors.toList());
 
         objects.forEach(OnePointObject::setRandomPosition);
@@ -65,7 +65,7 @@ public class BoardModel {
     }
 
     private void clearBots() {
-        List<Player> livePlayers = players.stream().filter(player -> !player.isBot()).collect(Collectors.toList());
+        List<Player> livePlayers = players.stream().filter(player -> !player.isBot()).toList();
         players.clear();
         players.addAll(livePlayers);
     }
@@ -90,7 +90,7 @@ public class BoardModel {
         ).findFirst();
     }
 
-    public Optional<? extends OnePointObject> checkCollisions(Point playerPosition, UUID objectId) {
+    public Optional<? extends OnePointObject> checkCollisions(Point playerPosition) {
         Optional<Player> realPlayer = getPlayers().stream()
                 .filter(player -> Collision.check(player.getPlayerModel().getView(), playerPosition))
                 .findFirst();
@@ -100,8 +100,7 @@ public class BoardModel {
         if (board.isOutside(playerPosition)) {
             return Optional.of(new RectObject(gameConfig, resourceLoader, null));
         }
-        return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())
-        ).findFirst();
+        return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())).findFirst();
     }
 
     private void tryingToChangeDuplicatePosition(List<Square> forbiddenAreas) {
@@ -129,7 +128,7 @@ public class BoardModel {
 
     private int changePositionFromForbiddenAreas(List<Square> forbiddenAreas) {
         List<OnePointObject> pointsToChange = objects.stream().filter(p ->
-                forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).collect(Collectors.toList());
+                forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).toList();
         pointsToChange.forEach(OnePointObject::setRandomPosition);
         return pointsToChange.size();
     }
