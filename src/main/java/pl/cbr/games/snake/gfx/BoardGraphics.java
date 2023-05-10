@@ -41,7 +41,7 @@ public class BoardGraphics {
     }
 
     private void printStartLogo(Graphics g, Board board) {
-        gfx.drawImage(g, GameResource.START_LOGO, Point2D.get(0, 0));
+        gfx.drawImageGameMetrics(g, GameResource.START_LOGO, Point2D.get(0, 0));
         printCenterText(g, board, Color.white, messages.getStartGame());
     }
 

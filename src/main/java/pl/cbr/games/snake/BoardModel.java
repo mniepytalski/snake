@@ -46,13 +46,13 @@ public class BoardModel {
 
     public void init(Level level) {
         objects.clear();
-        IntStream.rangeClosed(1, level.getApples()).forEach(n -> getObjects().add(new Apple(gameConfig, this, gfx)));
-        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> getObjects().add(new Wall(gameConfig, this, gfx)));
-        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> getObjects().add(new Lemon(gameConfig, this, gfx)));
+        IntStream.rangeClosed(1, level.getApples()).forEach(n -> getObjects().add(new Apple( this, gfx)));
+        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> getObjects().add(new Wall(this, gfx)));
+        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> getObjects().add(new Lemon(this, gfx)));
 
         clearBots();
         for (int i = 0; i < level.getBots(); i++) {
-            addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gameConfig, gfx));
+            addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), gfx));
         }
         List<Square> forbiddenAreas = getPlayers().stream()
                 .map(Player::getPlayerModel)
@@ -100,7 +100,7 @@ public class BoardModel {
             return realPlayer;
         }
         if (board.isOutside(playerPosition)) {
-            return Optional.of(new RectObject(gameConfig, null, gfx));
+            return Optional.of(new RectObject(null, gfx));
         }
         return getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())).findFirst();
     }

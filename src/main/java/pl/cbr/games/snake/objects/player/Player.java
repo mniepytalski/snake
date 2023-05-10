@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.GameResource;
-import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.geom2d.Rectangle;
 import pl.cbr.games.snake.gfx.GameGraphics;
-import pl.cbr.games.snake.objects.*;
+import pl.cbr.games.snake.objects.OnePointObject;
+import pl.cbr.games.snake.objects.PlayerObject;
+import pl.cbr.games.snake.objects.RectObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,10 +26,10 @@ public class Player extends OnePointObject {
     private final PlayerModel playerModel;
     private final GameGraphics gfx;
 
-    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameConfig gameConfig, GameGraphics gfx) {
-        super(gameConfig, boardModel, gfx);
+    public Player(BoardModel boardModel, PlayerConfig playerConfig, GameGraphics gfx) {
+        super(boardModel, gfx);
         this.gfx = gfx;
-        playerModel = new PlayerModel(gameConfig, playerConfig);
+        playerModel = new PlayerModel(boardModel.getGameConfig(), playerConfig);
     }
 
     public void init() {
@@ -43,13 +44,13 @@ public class Player extends OnePointObject {
     public Optional<OnePointObject> checkCollision() {
         if ( getPlayerModel().checkOurselfCollision() ) {
             getPlayerState().setInGame(false);
-            return Optional.of(new PlayerObject(gameConfig, null, gfx));
+            return Optional.of(new PlayerObject(null, gfx));
         }
         Rectangle boardRectangle = new Rectangle(new Point2D(),
-                (new Point2D(gameConfig.getWidth(),gameConfig.getHeight())).division(gameConfig.getDotSize()));
+                (new Point2D(boardModel.getGameConfig().getWidth(),boardModel.getGameConfig().getHeight())).division(boardModel.getGameConfig().getDotSize()));
         if (getPlayerModel().isOutside(boardRectangle)) {
             getPlayerState().setInGame(false);
-            return Optional.of(new RectObject(gameConfig,  null, gfx));
+            return Optional.of(new RectObject(null, gfx));
         }
         return Optional.empty();
     }

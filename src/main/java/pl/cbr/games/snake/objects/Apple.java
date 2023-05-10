@@ -4,15 +4,14 @@ import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResource;
-import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 @ToString(callSuper = true)
 public class Apple extends OnePointObject implements Drawing {
 
-    public Apple(GameConfig gameConfig, BoardModel boardModel, GameGraphics gfx) {
-        super(gameConfig, boardModel, gfx);
+    public Apple(BoardModel boardModel, GameGraphics gfx) {
+        super(boardModel, gfx);
     }
 
     @Override

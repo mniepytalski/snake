@@ -16,16 +16,12 @@ public class GameGraphics {
     private final GameConfig gameConfig;
     private final ResourceLoader resourceLoader;
 
-    public void drawImage(Graphics g, GameResource resource, Point2D point) {
-        g.drawImage(resourceLoader.get(resource), point.getX(), point.getY(), null);
-    }
-
     public void drawImageGameMetrics(Graphics g, GameResource resource, Point2D point) {
         Point2D position = point.multiply(gameConfig.getDotSize());
         drawImage(g, resource, position);
     }
 
-    public void drawImage(Graphics g, Image image, Point2D point) {
-        g.drawImage(image, point.getX(), point.getY(), null);
+    private void drawImage(Graphics g, GameResource resource, Point2D point) {
+        g.drawImage(resourceLoader.get(resource), point.getX(), point.getY(), null);
     }
 }
