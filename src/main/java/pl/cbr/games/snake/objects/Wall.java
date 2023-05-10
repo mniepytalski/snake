@@ -2,16 +2,14 @@ package pl.cbr.games.snake.objects;
 
 import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResource;
-import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 @ToString(callSuper = true)
-public class Wall extends OnePointObject implements Drawing {
+public class Wall extends OnePointObject {
 
-    public Wall(BoardModel boardModel, GameGraphics gfx) {
-        super(boardModel, gfx);
+    public Wall(BoardModel boardModel) {
+        super(boardModel);
     }
 
     @Override

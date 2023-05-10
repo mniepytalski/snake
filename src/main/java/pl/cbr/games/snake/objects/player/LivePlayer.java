@@ -2,14 +2,13 @@ package pl.cbr.games.snake.objects.player;
 
 import pl.cbr.games.snake.BoardModel;
 import pl.cbr.games.snake.config.PlayerAndControlsConfig;
-import pl.cbr.games.snake.gfx.GameGraphics;
 
 import java.awt.event.KeyEvent;
 
 public class LivePlayer extends Player {
 
-    public LivePlayer(BoardModel boardModel, PlayerAndControlsConfig playerConfig, GameGraphics gfx) {
-        super(boardModel, playerConfig, gfx);
+    public LivePlayer(BoardModel boardModel, PlayerAndControlsConfig playerConfig) {
+        super(boardModel, playerConfig);
         playerState = new PlayerState(playerConfig.getControl());
     }
 

@@ -41,13 +41,13 @@ public class BoardGraphics {
     }
 
     private void printStartLogo(Graphics g, Board board) {
-        gfx.drawImageGameMetrics(g, GameResource.START_LOGO, Point2D.get(0, 0));
+        gfx.drawImage(g, GameResource.START_LOGO, Point2D.get(0, 0));
         printCenterText(g, board, Color.white, messages.getStartGame());
     }
 
     private void printRunningBoard(Graphics g, Board board) {
-        board.getBoardModel().getObjects().forEach(objectToDraw -> objectToDraw.doDrawing(g));
-        board.getBoardModel().getPlayers().forEach( objectToDraw -> objectToDraw.doDrawing(g));
+        board.getBoardModel().getObjects().forEach(objectToDraw -> gfx.drawOnePointObject(g, objectToDraw));
+        board.getBoardModel().getPlayers().forEach(objectToDraw -> gfx.drawPlayer(g, objectToDraw));
         if ( gameConfig.isLattice()) {
             drawLattice(g);
         }
@@ -65,7 +65,7 @@ public class BoardGraphics {
     private void gameOver(Graphics g, Board board) {
         printRunningBoard(g, board);
         board.getBoardModel().getCollisionPoint().ifPresent(p -> {
-            if ( counter++%2==0 ) p.doDrawing(g);
+            if ( counter++%2==0 ) gfx.drawOnePointObject(g, p);
         });
         printCenterText(g, board, Color.white, messages.getEndGame());
     }

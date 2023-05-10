@@ -5,24 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.Drawing;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.geom2d.Point2D;
-import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.objects.player.PlayerModel;
-
-import java.awt.*;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class OnePointObject extends BaseObject implements Drawing {
+public abstract class OnePointObject extends BaseObject {
 
     private Point2D position;
 
-    protected OnePointObject(BoardModel boardModel, GameGraphics gfx) {
-        super(boardModel, gfx);
+    protected OnePointObject(BoardModel boardModel) {
+        super(boardModel);
         this.position = new Point2D();
     }
 
@@ -36,10 +32,6 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
 
     public GameResource getImage() {
         return null;
-    }
-
-    public void doDrawing(Graphics g) {
-        gfx.drawImageGameMetrics(g, getImage(), getPosition());
     }
 
     public void actionOnPlayerHit(PlayerModel playerModel) {
