@@ -1,1 +1,1 @@
-1. move PlayerConfig to PlayerModel
+1. move object and players from BoardModel to GameModel

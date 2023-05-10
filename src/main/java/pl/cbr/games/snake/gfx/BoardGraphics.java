@@ -16,7 +16,6 @@ public class BoardGraphics {
 
     private final GameConfig gameConfig;
     private final MessagesConfig messages;
-    private final ResourceLoader resourceLoader;
     private final GameGraphics gfx;
 
     private static final String FONT_TYPE = "Courier";
@@ -29,13 +28,6 @@ public class BoardGraphics {
         for ( int y=gameConfig.getDotSize(); y<=gameConfig.getHeight(); y+=gameConfig.getDotSize()) {
             g.drawLine(0, y, gameConfig.getWidth(), y);
         }
-    }
-
-    public void init(Board board) {
-        board.setBackground(Color.black);
-        board.setFocusable(true);
-        Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
-        board.setPreferredSize(dimension);
     }
 
     public void printBoard(GameStatus gameStatus, Graphics g, Board board) {

@@ -29,7 +29,6 @@ import static java.util.stream.Collectors.collectingAndThen;
 public class BoardModel {
 
     private final GameConfig gameConfig;
-    private final ResourceLoader resourceLoader;
     private final GameGraphics gfx;
     private final Rectangle board;
 
@@ -38,9 +37,8 @@ public class BoardModel {
 
     private Optional<OnePointObject> collisionPoint;
 
-    public BoardModel(GameConfig gameConfig, ResourceLoader resourceLoader, GameGraphics gfx) {
+    public BoardModel(GameConfig gameConfig, GameGraphics gfx) {
         this.gameConfig = gameConfig;
-        this.resourceLoader = resourceLoader;
         this.gfx = gfx;
         board = new Rectangle(new Point2D(),
                 (new Point2D(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));

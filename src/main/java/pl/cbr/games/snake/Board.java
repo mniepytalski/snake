@@ -42,9 +42,11 @@ public class Board extends JPanel implements ActionListener, Drawing {
         this.setSize(gameConfig.getWidth(), gameConfig.getHeight());
         this.gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig, gameConfig, gfx)));
         addKeyListener(new BoardKeyAdapter(this));
-        boardGraphics.init(this);
-        systemTimer.init(this);
-        systemTimer.start();
+        setBackground(Color.black);
+        setFocusable(true);
+        Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
+        setPreferredSize(dimension);
+        systemTimer.initAndStart(this);
         gameModel.setStatus(GameStatus.START_LOGO);
         initGame();
     }
