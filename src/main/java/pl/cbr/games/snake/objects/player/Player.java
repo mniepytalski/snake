@@ -61,11 +61,9 @@ public class Player extends OnePointObject {
     @Override
     public void doDrawing(Graphics g) {
         GameResource ballResource = isBot() ? GameResource.BALL0 : GameResource.BALL1;
-        Point2D startPoint = getPlayerModel().get(0).multiply(gameConfig.getDotSize());
-        gfx.drawImage(g, GameResource.HEAD,  startPoint);
+        gfx.drawImageGameMetrics(g, GameResource.HEAD,  getPlayerModel().get(0));
         for (int z = 1; z < getPlayerModel().getViewSize(); z++) {
-            Point2D point = getPlayerModel().get(z).multiply(gameConfig.getDotSize());
-            gfx.drawImage(g, ballResource, point);
+            gfx.drawImageGameMetrics(g, ballResource, getPlayerModel().get(z));
         }
     }
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.ResourceLoader;
+import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.geom2d.Point2D;
 
 import java.awt.*;
@@ -12,10 +13,16 @@ import java.awt.*;
 @Component
 public class GameGraphics {
 
+    private final GameConfig gameConfig;
     private final ResourceLoader resourceLoader;
 
     public void drawImage(Graphics g, GameResource resource, Point2D point) {
         g.drawImage(resourceLoader.get(resource), point.getX(), point.getY(), null);
+    }
+
+    public void drawImageGameMetrics(Graphics g, GameResource resource, Point2D point) {
+        Point2D position = point.multiply(gameConfig.getDotSize());
+        drawImage(g, resource, position);
     }
 
     public void drawImage(Graphics g, Image image, Point2D point) {

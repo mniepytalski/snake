@@ -40,8 +40,7 @@ public abstract class OnePointObject extends BaseObject implements Drawing {
     }
 
     public void doDrawing(Graphics g) {
-        Point2D position = getPosition().multiply(gameConfig.getDotSize());
-        gfx.drawImage(g, getImage(), position);
+        gfx.drawImageGameMetrics(g, getImage(), getPosition());
     }
 
     public void actionOnPlayerHit(PlayerModel playerModel) {
