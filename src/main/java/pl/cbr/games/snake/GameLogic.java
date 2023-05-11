@@ -10,7 +10,6 @@ import pl.cbr.games.snake.config.PositionConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.geom2d.Square;
-import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
@@ -30,7 +29,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 public class GameLogic {
 
     private final GameConfig gameConfig;
-    private final GameGraphics gfx;
+
     private final Collision collision;
     private final GameModel model;
 
@@ -53,7 +52,7 @@ public class GameLogic {
 
         model.getObjects().forEach(OnePointObject::setRandomPosition);
         tryingToChangeDuplicatePosition(forbiddenAreas);
-        model.setCollisionPoint(Optional.empty());
+        model.setCollisionPoint(null);
     }
 
     public boolean collisionWithPoint() {

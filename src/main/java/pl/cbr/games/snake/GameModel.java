@@ -8,7 +8,6 @@ import pl.cbr.games.snake.objects.player.Player;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Component
@@ -17,7 +16,7 @@ public class GameModel {
     private GameStatus status;
     private final List<OnePointObject> objects = new ArrayList<>();
     private final List<Player> players= new ArrayList<>();
-    private Optional<OnePointObject> collisionPoint = Optional.empty();
+    private OnePointObject collisionPoint = null;
 
     @PostConstruct
     public void init() {

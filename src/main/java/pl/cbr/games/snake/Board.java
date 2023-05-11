@@ -16,7 +16,6 @@ import pl.cbr.games.snake.objects.player.Player;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 
@@ -112,7 +111,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         if (player.isBot()) {
             player.init();
         } else {
-            model.setCollisionPoint(Optional.of(collisionObject));
+            model.setCollisionPoint(collisionObject);
             model.setStatus(GameStatus.STOP);
         }
     }
