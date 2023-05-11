@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 @Slf4j
 public class GameKeyAdapter extends KeyAdapter {
 
-    private final Board board;
+    private final Game game;
     private final GameModel model;
 
     @Override
@@ -25,7 +25,7 @@ public class GameKeyAdapter extends KeyAdapter {
 
     private void startLogic() {
         model.setStatus(GameStatus.RUNNING);
-        board.initGame();
+        game.initGame();
     }
 
     private void pauseLogic() {

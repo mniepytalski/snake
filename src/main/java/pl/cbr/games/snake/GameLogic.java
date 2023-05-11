@@ -20,8 +20,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.collectingAndThen;
-
 @Slf4j
 @Getter
 @AllArgsConstructor
@@ -56,7 +54,7 @@ public class GameLogic {
     }
 
     public boolean collisionWithPoint() {
-        return !detectDuplicates().isEmpty();
+        return !model.detectDuplicates().isEmpty();
     }
 
     private void tryingToChangeDuplicatePosition(List<Square> forbiddenAreas) {
@@ -77,7 +75,7 @@ public class GameLogic {
     }
 
     private int getDuplicatesAndChangePosition() {
-        Map<Point2D, List<OnePointObject>> duplicates = detectDuplicates();
+        Map<Point2D, List<OnePointObject>> duplicates = model.detectDuplicates();
         duplicates.forEach((k,v) -> v.stream().skip(1).forEach(OnePointObject::setRandomPosition));
         return duplicates.size();
     }
@@ -87,17 +85,5 @@ public class GameLogic {
                 forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).toList();
         pointsToChange.forEach(OnePointObject::setRandomPosition);
         return pointsToChange.size();
-    }
-
-    private Map<Point2D, List<OnePointObject>> detectDuplicates() {
-        return model.getObjects().stream()
-                .collect(
-                        collectingAndThen(
-                                Collectors.groupingBy(OnePointObject::getPosition)
-                                , m -> {
-                                    m.values().removeIf(v -> v.size() <= 1L);
-                                    return m;
-                                })
-                );
     }
 }

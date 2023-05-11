@@ -24,7 +24,7 @@ import javax.swing.*;
 @AllArgsConstructor
 @Data
 @Component
-public class Board extends JPanel implements ActionListener, Drawing {
+public class Game extends JPanel implements ActionListener, Drawing {
 
     private final Collision collision;
     private final GameModel model;
