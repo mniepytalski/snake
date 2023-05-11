@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.player.PlayerModel;
@@ -17,14 +17,14 @@ public abstract class OnePointObject extends BaseObject {
 
     private Point2D position;
 
-    protected OnePointObject(BoardLogic boardLogic) {
-        super(boardLogic);
+    protected OnePointObject(GameLogic gameLogic) {
+        super(gameLogic);
         this.position = Point2D.of(0, 0);
     }
 
     public void setRandomPosition() {
-        setPosition(Point2D.Random(boardLogic.getCollision().getBoard().getRightBottom().getX(),
-                boardLogic.getCollision().getBoard().getRightBottom().getY()));
+        setPosition(Point2D.Random(gameLogic.getCollision().getBoard().getRightBottom().getX(),
+                gameLogic.getCollision().getBoard().getRightBottom().getY()));
     }
 
     public void setPosition(Point2D point) {
@@ -38,7 +38,7 @@ public abstract class OnePointObject extends BaseObject {
     public void actionOnPlayerHit(PlayerModel playerModel) {
         for ( int i=0; i<100; i++ ) {
             setRandomPosition();
-            if (!boardLogic.collisionWithPoint()) {
+            if (!gameLogic.collisionWithPoint()) {
                 break;
             }
         }

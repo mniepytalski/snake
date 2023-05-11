@@ -1,10 +1,10 @@
 package pl.cbr.games.snake.objects;
 
-import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.GameLogic;
 
 public class RectObject extends OnePointObject {
 
-    public RectObject(BoardLogic boardLogic) {
-        super(boardLogic);
+    public RectObject(GameLogic gameLogic) {
+        super(gameLogic);
     }
 }

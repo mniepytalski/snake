@@ -8,10 +8,10 @@ import java.awt.event.KeyEvent;
 
 @AllArgsConstructor
 @Slf4j
-public class BoardKeyAdapter extends KeyAdapter {
+public class GameKeyAdapter extends KeyAdapter {
 
     private final Board board;
-    private final BoardModel model;
+    private final GameModel model;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -24,14 +24,14 @@ public class BoardKeyAdapter extends KeyAdapter {
     }
 
     private void startLogic() {
-        board.getGameModel().setStatus(GameStatus.RUNNING);
+        model.setStatus(GameStatus.RUNNING);
         board.initGame();
     }
 
     private void pauseLogic() {
-        switch(board.getGameModel().getStatus()) {
-            case PAUSED -> board.getGameModel().setStatus(GameStatus.RUNNING);
-            case RUNNING -> board.getGameModel().setStatus(GameStatus.PAUSED);
+        switch(model.getStatus()) {
+            case PAUSED -> model.setStatus(GameStatus.RUNNING);
+            case RUNNING -> model.setStatus(GameStatus.PAUSED);
         }
     }
 }

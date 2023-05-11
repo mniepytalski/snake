@@ -3,7 +3,6 @@ package pl.cbr.games.snake.objects.player;
 import lombok.Getter;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 
 import java.util.ArrayList;
@@ -16,16 +15,14 @@ public class PlayerModel {
     private final GameConfig gameConfig;
 
     private final PlayerConfig playerConfig;
-    private final Collision collision;
 
     private final DirectionService directionService;
     private int points;
 
-    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig, Collision collision) {
+    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig) {
         view = new ArrayList<>();
         this.gameConfig = gameConfig;
         this.playerConfig = playerConfig;
-        this.collision = collision;
         directionService = new DirectionService();
     }
 
@@ -61,10 +58,6 @@ public class PlayerModel {
 
     public int getViewSize() {
         return view.size();
-    }
-
-    public boolean checkOurselfCollision() {
-        return collision.check(view);
     }
 
 

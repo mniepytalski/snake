@@ -2,11 +2,13 @@ package pl.cbr.games.snake.geom2d;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.GameModel;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.objects.OnePointObject;
+import pl.cbr.games.snake.objects.PlayerObject;
 import pl.cbr.games.snake.objects.RectObject;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,11 +19,11 @@ import java.util.stream.Collectors;
 public class Collision {
 
     private final GameConfig gameConfig;
-    private final BoardModel model;
+    private final GameModel model;
 
     private final Rectangle board;
 
-    public Collision(GameConfig gameConfig, BoardModel model) {
+    public Collision(GameConfig gameConfig, GameModel model) {
         this.gameConfig = gameConfig;
         this.model = model;
         board = new Rectangle(Point2D.of(0, 0),
@@ -72,5 +74,19 @@ public class Collision {
             return Optional.of(new RectObject(null));
         }
         return model.getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())).findFirst();
+    }
+
+    public boolean check(PlayerModel playerModel) {
+        return check(playerModel.getView());
+    }
+
+    public Optional<OnePointObject> checkCollision(Player player) {
+        if ( check(player.getPlayerModel()) ) {
+            return Optional.of(new PlayerObject(null));
+        }
+        if (isOutside(player.getPlayerModel().getHead())) {
+            return Optional.of(new RectObject(null));
+        }
+        return Optional.empty();
     }
 }

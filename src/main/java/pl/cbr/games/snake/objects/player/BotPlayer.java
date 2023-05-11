@@ -1,6 +1,6 @@
 package pl.cbr.games.snake.objects.player;
 
-import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.player.mind.MoveStrategy;
@@ -11,10 +11,10 @@ public class BotPlayer extends Player {
 
     private final MoveStrategy mind;
 
-    public BotPlayer(BoardLogic boardLogic, PlayerConfig playerConfig, Collision collision) {
-        super(boardLogic, playerConfig, collision);
+    public BotPlayer(GameLogic gameLogic, PlayerConfig playerConfig, Collision collision) {
+        super(gameLogic, playerConfig);
         playerState = new PlayerState();
-        mind = new MoveStrategy( this, boardLogic, collision);
+        mind = new MoveStrategy( this, gameLogic, collision);
     }
 
     public void keyPressed(KeyEvent e) {

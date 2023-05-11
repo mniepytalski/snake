@@ -2,7 +2,7 @@ package pl.cbr.games.snake.objects.player.mind;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.OnePointObject;
@@ -19,15 +19,15 @@ public class MoveStrategyBase {
     MoveDirection startDirection;
 
     BotPlayer player;
-    BoardLogic boardLogic;
+    GameLogic gameLogic;
     Collision collision;
 
     int moveDelay = 5;
     int counter = 0;
 
-    public MoveStrategyBase(BotPlayer player, BoardLogic boardLogic, Collision collision) {
+    public MoveStrategyBase(BotPlayer player, GameLogic gameLogic, Collision collision) {
         this.player = player;
-        this.boardLogic = boardLogic;
+        this.gameLogic = gameLogic;
         this.collision = collision;
     }
 

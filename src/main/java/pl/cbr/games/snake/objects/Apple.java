@@ -1,15 +1,15 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.ToString;
-import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 @ToString(callSuper = true)
 public class Apple extends OnePointObject {
 
-    public Apple(BoardLogic boardLogic) {
-        super(boardLogic);
+    public Apple(GameLogic gameLogic) {
+        super(gameLogic);
     }
 
     @Override

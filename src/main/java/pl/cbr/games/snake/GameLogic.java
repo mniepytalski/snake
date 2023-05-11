@@ -27,14 +27,14 @@ import static java.util.stream.Collectors.collectingAndThen;
 @Getter
 @AllArgsConstructor
 @Component
-public class BoardLogic {
+public class GameLogic {
 
     private final GameConfig gameConfig;
     private final GameGraphics gfx;
     private final Collision collision;
-    private final BoardModel model;
+    private final GameModel model;
 
-    public void init(Level level) {
+    public void initLevel(Level level) {
         model.getObjects().clear();
         IntStream.rangeClosed(1, level.getApples()).forEach(n -> model.getObjects().add(new Apple(this)));
         IntStream.rangeClosed(1, level.getWalls()).forEach(n -> model.getObjects().add(new Wall(this)));

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.gfx.BoardGraphics;
-import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.levels.LevelScenarios;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.LivePlayer;
@@ -28,41 +27,39 @@ import javax.swing.*;
 @Component
 public class Board extends JPanel implements ActionListener, Drawing {
 
-    private final GameModel gameModel;
     private final Collision collision;
-    private final BoardModel model;
+    private final GameModel model;
     private final SystemTimer systemTimer;
     private final transient GameConfig gameConfig;
     private final transient BoardGraphics boardGraphics;
     private final transient ResourceLoader resourceLoader;
-    private final GameGraphics gfx;
-    private final transient BoardLogic boardLogic;
+    private final transient GameLogic gameLogic;
     private final transient LevelScenarios levelScenarios;
 
     @PostConstruct
     private void init() {
-        gameModel.setStatus(GameStatus.RUNNING);
+        model.setStatus(GameStatus.RUNNING);
         setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        gameConfig.getPlayers().forEach(playerConfig -> model.addPlayer(new LivePlayer(boardLogic, playerConfig,collision)));
-        addKeyListener(new BoardKeyAdapter(this, model));
+        gameConfig.getPlayers().forEach(playerConfig -> model.addPlayer(new LivePlayer(gameLogic, playerConfig)));
+        addKeyListener(new GameKeyAdapter(this, model));
         setBackground(Color.black);
         setFocusable(true);
         Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
         setPreferredSize(dimension);
         systemTimer.initAndStart(this);
-        gameModel.setStatus(GameStatus.START_LOGO);
+        model.setStatus(GameStatus.START_LOGO);
         initGame();
     }
 
     public void initGame() {
-        boardLogic.init(levelScenarios.getLevel());
+        gameLogic.initLevel(levelScenarios.getLevel());
         model.getPlayers().forEach(Player::init);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        log.debug("paintComponent, gameStatus:{}, timer:{}", gameModel.getStatus(), systemTimer.isRunning());
-        switch (gameModel.getStatus()) {
+        log.debug("paintComponent, gameStatus:{}, timer:{}", model.getStatus(), systemTimer.isRunning());
+        switch (model.getStatus()) {
             case RUNNING, PAUSED, NEXT_LEVEL, START_LOGO, STOP -> {
                 super.paintComponent(g);
                 doDrawing(g);
@@ -71,11 +68,11 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     public void doDrawing(Graphics g) {
-        if (gameModel.getStatus() != GameStatus.NEXT_LEVEL && gameModel.getStatus() != GameStatus.START_LOGO &&
+        if (model.getStatus() != GameStatus.NEXT_LEVEL && model.getStatus() != GameStatus.START_LOGO &&
                 model.getPlayers().stream().noneMatch(player -> player.getPlayerState().isInGame())) {
-            gameModel.setStatus(GameStatus.STOP);
+            model.setStatus(GameStatus.STOP);
         }
-        boardGraphics.printBoard(gameModel.getStatus(), g, this);
+        boardGraphics.printBoard(model.getStatus(), g, this);
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -90,7 +87,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
                             if (player.getPlayerModel().getPoints() >= levelScenarios.getLevel().getPointsToFinish()
                                     && !player.isBot()) {
                                 levelScenarios.setNextLevel();
-                                gameModel.setStatus(GameStatus.NEXT_LEVEL);
+                                model.setStatus(GameStatus.NEXT_LEVEL);
                                 resourceLoader.playSound("nextLevel");
                             } else {
                                 resourceLoader.playSound("eating1");
@@ -98,8 +95,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
                         }
                     }
             );
-            player.checkCollision().ifPresent(boardObject -> actionOnCollision(player, boardObject));
-            if (GameStatus.RUNNING == gameModel.getStatus()) {
+            collision.checkCollision(player).ifPresent(boardObject -> actionOnCollision(player, boardObject));
+            if (GameStatus.RUNNING == model.getStatus()) {
                 player.move();
             }
         });
@@ -107,7 +104,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     private void actionOnCollision(Player player, OnePointObject collisionObject) {
-        if (gameModel.getStatus() == GameStatus.STOP)
+        player.getPlayerState().setInGame(false);
+        if (model.getStatus() == GameStatus.STOP)
             return;
         log.warn("collision: {} -> {}, {}, {}", player.getName(), collisionObject.getClass().getSimpleName(),
                 player.getPlayerModel().getHead(), player.getPlayerState().getDirection());
@@ -115,7 +113,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
             player.init();
         } else {
             model.setCollisionPoint(Optional.of(collisionObject));
-            gameModel.setStatus(GameStatus.STOP);
+            model.setStatus(GameStatus.STOP);
         }
     }
 }

@@ -15,7 +15,7 @@ import java.awt.*;
 public class BoardGraphics {
 
     private final GameConfig gameConfig;
-    private final BoardModel model;
+    private final GameModel model;
     private final MessagesConfig messages;
     private final GameGraphics gfx;
 
