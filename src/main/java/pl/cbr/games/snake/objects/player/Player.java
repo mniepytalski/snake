@@ -3,10 +3,9 @@ package pl.cbr.games.snake.objects.player;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 import pl.cbr.games.snake.config.PlayerConfig;
-import pl.cbr.games.snake.geom2d.Point2D;
-import pl.cbr.games.snake.geom2d.Rectangle;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.PlayerObject;
 import pl.cbr.games.snake.objects.RectObject;
@@ -22,10 +21,12 @@ public class Player extends OnePointObject {
 
     PlayerState playerState;
     private final PlayerModel playerModel;
+    private final Collision collision;
 
-    public Player(BoardModel boardModel, PlayerConfig playerConfig) {
-        super(boardModel);
-        playerModel = new PlayerModel(boardModel.getGameConfig(), playerConfig);
+    public Player(BoardLogic boardLogic, PlayerConfig playerConfig, Collision collision) {
+        super(boardLogic);
+        this.collision = collision;
+        playerModel = new PlayerModel(boardLogic.getGameConfig(), playerConfig, collision);
     }
 
     public void init() {
@@ -42,9 +43,8 @@ public class Player extends OnePointObject {
             getPlayerState().setInGame(false);
             return Optional.of(new PlayerObject(null));
         }
-        Rectangle boardRectangle = new Rectangle(new Point2D(),
-                (new Point2D(boardModel.getGameConfig().getWidth(),boardModel.getGameConfig().getHeight())).division(boardModel.getGameConfig().getDotSize()));
-        if (getPlayerModel().isOutside(boardRectangle)) {
+
+        if (collision.isOutside(getPlayerModel().getHead())) {
             getPlayerState().setInGame(false);
             return Optional.of(new RectObject(null));
         }

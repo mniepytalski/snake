@@ -1,14 +1,15 @@
 package pl.cbr.games.snake.objects.player;
 
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 import pl.cbr.games.snake.config.PlayerAndControlsConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 
 import java.awt.event.KeyEvent;
 
 public class LivePlayer extends Player {
 
-    public LivePlayer(BoardModel boardModel, PlayerAndControlsConfig playerConfig) {
-        super(boardModel, playerConfig);
+    public LivePlayer(BoardLogic boardLogic, PlayerAndControlsConfig playerConfig, Collision collision) {
+        super(boardLogic, playerConfig, collision);
         playerState = new PlayerState(playerConfig.getControl());
     }
 

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.gfx.BoardGraphics;
 import pl.cbr.games.snake.gfx.GameGraphics;
 import pl.cbr.games.snake.levels.LevelScenarios;
@@ -28,20 +29,22 @@ import javax.swing.*;
 public class Board extends JPanel implements ActionListener, Drawing {
 
     private final GameModel gameModel;
+    private final Collision collision;
+    private final BoardModel model;
     private final SystemTimer systemTimer;
     private final transient GameConfig gameConfig;
     private final transient BoardGraphics boardGraphics;
     private final transient ResourceLoader resourceLoader;
     private final GameGraphics gfx;
-    private final transient BoardModel boardModel;
+    private final transient BoardLogic boardLogic;
     private final transient LevelScenarios levelScenarios;
 
     @PostConstruct
     private void init() {
         gameModel.setStatus(GameStatus.RUNNING);
         setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        gameConfig.getPlayers().forEach(playerConfig -> boardModel.addPlayer(new LivePlayer(boardModel, playerConfig)));
-        addKeyListener(new BoardKeyAdapter(this));
+        gameConfig.getPlayers().forEach(playerConfig -> model.addPlayer(new LivePlayer(boardLogic, playerConfig,collision)));
+        addKeyListener(new BoardKeyAdapter(this, model));
         setBackground(Color.black);
         setFocusable(true);
         Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
@@ -52,8 +55,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
     }
 
     public void initGame() {
-        boardModel.init(levelScenarios.getLevel());
-        boardModel.getPlayers().forEach(Player::init);
+        boardLogic.init(levelScenarios.getLevel());
+        model.getPlayers().forEach(Player::init);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
 
     public void doDrawing(Graphics g) {
         if (gameModel.getStatus() != GameStatus.NEXT_LEVEL && gameModel.getStatus() != GameStatus.START_LOGO &&
-                boardModel.getPlayers().stream().noneMatch(player -> player.getPlayerState().isInGame())) {
+                model.getPlayers().stream().noneMatch(player -> player.getPlayerState().isInGame())) {
             gameModel.setStatus(GameStatus.STOP);
         }
         boardGraphics.printBoard(gameModel.getStatus(), g, this);
@@ -78,8 +81,8 @@ public class Board extends JPanel implements ActionListener, Drawing {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boardModel.getPlayers().stream().filter(player -> player.getPlayerState().isInGame()).forEach(player -> {
-            boardModel.checkCollisions(player).ifPresent(boardObject -> {
+        model.getPlayers().stream().filter(player -> player.getPlayerState().isInGame()).forEach(player -> {
+            collision.check(player).ifPresent(boardObject -> {
                         if (boardObject.isEndGame()) {
                             actionOnCollision(player, boardObject);
                         } else {
@@ -111,7 +114,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         if (player.isBot()) {
             player.init();
         } else {
-            getBoardModel().setCollisionPoint(Optional.of(collisionObject));
+            getBoardLogic().setCollisionPoint(Optional.of(collisionObject));
             gameModel.setStatus(GameStatus.STOP);
         }
     }

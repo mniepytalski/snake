@@ -5,7 +5,6 @@ import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
-import pl.cbr.games.snake.geom2d.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +16,16 @@ public class PlayerModel {
     private final GameConfig gameConfig;
 
     private final PlayerConfig playerConfig;
+    private final Collision collision;
 
     private final DirectionService directionService;
     private int points;
 
-    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig) {
+    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig, Collision collision) {
         view = new ArrayList<>();
         this.gameConfig = gameConfig;
         this.playerConfig = playerConfig;
+        this.collision = collision;
         directionService = new DirectionService();
     }
 
@@ -63,12 +64,9 @@ public class PlayerModel {
     }
 
     public boolean checkOurselfCollision() {
-        return Collision.check(view);
+        return collision.check(view);
     }
 
-    public boolean isOutside(Rectangle boardModel) {
-        return boardModel.isOutside(getHead());
-    }
 
     public void addLength(int value) {
         length += value;

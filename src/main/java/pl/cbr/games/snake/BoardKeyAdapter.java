@@ -11,10 +11,11 @@ import java.awt.event.KeyEvent;
 public class BoardKeyAdapter extends KeyAdapter {
 
     private final Board board;
+    private final BoardModel model;
 
     @Override
     public void keyPressed(KeyEvent e) {
-        board.getBoardModel().getPlayers().forEach(player -> player.keyPressed(e));
+        model.getPlayers().forEach(player -> player.keyPressed(e));
         switch(e.getKeyCode()) {
             case KeyEvent.VK_R -> startLogic();
             case KeyEvent.VK_P -> pauseLogic();

@@ -15,7 +15,7 @@ public class Point2D {
         this(point.getX(), point.getY());
     }
 
-    public static Point2D get(int x, int y) {
+    public static Point2D of(int x, int y) {
         return new Point2D(x, y);
     }
 

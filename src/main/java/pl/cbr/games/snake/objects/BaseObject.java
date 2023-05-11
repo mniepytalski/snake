@@ -1,7 +1,7 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.Data;
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.UUID;
@@ -9,12 +9,12 @@ import java.util.UUID;
 @Data
 public abstract class BaseObject {
 
-    public final BoardModel boardModel;
+    public final BoardLogic boardLogic;
 
     final UUID uuid;
 
-    public BaseObject(BoardModel boardModel) {
-        this.boardModel = boardModel;
+    public BaseObject(BoardLogic boardLogic) {
+        this.boardLogic = boardLogic;
         uuid = UUID.randomUUID();
     }
 

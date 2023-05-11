@@ -1,7 +1,8 @@
 package pl.cbr.games.snake.objects.player;
 
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 import pl.cbr.games.snake.config.PlayerConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.player.mind.MoveStrategy;
 
 import java.awt.event.KeyEvent;
@@ -10,10 +11,10 @@ public class BotPlayer extends Player {
 
     private final MoveStrategy mind;
 
-    public BotPlayer(BoardModel boardModel, PlayerConfig playerConfig) {
-        super(boardModel, playerConfig);
+    public BotPlayer(BoardLogic boardLogic, PlayerConfig playerConfig, Collision collision) {
+        super(boardLogic, playerConfig, collision);
         playerState = new PlayerState();
-        mind = new MoveStrategy( this, boardModel);
+        mind = new MoveStrategy( this, boardLogic, collision);
     }
 
     public void keyPressed(KeyEvent e) {

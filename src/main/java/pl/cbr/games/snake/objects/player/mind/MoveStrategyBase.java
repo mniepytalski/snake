@@ -2,7 +2,8 @@ package pl.cbr.games.snake.objects.player.mind;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.BotPlayer;
@@ -18,14 +19,16 @@ public class MoveStrategyBase {
     MoveDirection startDirection;
 
     BotPlayer player;
-    BoardModel boardModel;
+    BoardLogic boardLogic;
+    Collision collision;
 
     int moveDelay = 5;
     int counter = 0;
 
-    public MoveStrategyBase(BotPlayer player, BoardModel boardModel) {
+    public MoveStrategyBase(BotPlayer player, BoardLogic boardLogic, Collision collision) {
         this.player = player;
-        this.boardModel = boardModel;
+        this.boardLogic = boardLogic;
+        this.collision = collision;
     }
 
     boolean canIMove() {
@@ -88,13 +91,13 @@ public class MoveStrategyBase {
     void avoidingObstacles() {
         startDirection = player.getPlayerState().getDirection();
         Point2D nextPosition = calcNextPosition();
-        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
+        Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 turnLeft(getStartDirection());
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition()).ifPresent(
+                collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 oppositeDirection();
@@ -114,13 +117,13 @@ public class MoveStrategyBase {
             turnRight();
         }
         Point2D nextPosition = calcNextPosition();
-        Optional<? extends OnePointObject> optionalBoardObject = boardModel.checkCollisions(nextPosition);
+        Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
                 oppositeDirection();
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
-                boardModel.checkCollisions(calcNextPosition()).ifPresent(
+                collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 setDirection(startDirection);

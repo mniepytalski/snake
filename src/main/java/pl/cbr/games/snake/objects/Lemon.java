@@ -1,15 +1,15 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.ToString;
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 @ToString(callSuper = true)
 public class Lemon extends OnePointObject {
 
-    public Lemon(BoardModel boardModel) {
-        super(boardModel);
+    public Lemon(BoardLogic boardLogic) {
+        super(boardLogic);
     }
 
     @Override

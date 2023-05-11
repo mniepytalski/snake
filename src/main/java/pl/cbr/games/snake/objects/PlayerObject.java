@@ -1,10 +1,10 @@
 package pl.cbr.games.snake.objects;
 
-import pl.cbr.games.snake.BoardModel;
+import pl.cbr.games.snake.BoardLogic;
 
 public class PlayerObject extends OnePointObject {
 
-    public PlayerObject(BoardModel boardModel) {
-        super(boardModel);
+    public PlayerObject(BoardLogic boardLogic) {
+        super(boardLogic);
     }
 }
