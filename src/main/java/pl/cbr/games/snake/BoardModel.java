@@ -1,18 +1,20 @@
 package pl.cbr.games.snake;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Getter
+@Data
 @Component
 public class BoardModel {
     private final List<OnePointObject> objects = new ArrayList<>();
     private final List<Player> players= new ArrayList<>();
+    private Optional<OnePointObject> collisionPoint = Optional.empty();
 
 
     public void addPlayer(Player player) {

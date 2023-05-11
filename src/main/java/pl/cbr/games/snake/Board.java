@@ -114,7 +114,7 @@ public class Board extends JPanel implements ActionListener, Drawing {
         if (player.isBot()) {
             player.init();
         } else {
-            getBoardLogic().setCollisionPoint(Optional.of(collisionObject));
+            model.setCollisionPoint(Optional.of(collisionObject));
             gameModel.setStatus(GameStatus.STOP);
         }
     }

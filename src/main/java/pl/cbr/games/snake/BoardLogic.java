@@ -1,6 +1,7 @@
 package pl.cbr.games.snake;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.config.GameConfig;
@@ -23,7 +24,8 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.collectingAndThen;
 
 @Slf4j
-@Data
+@Getter
+@AllArgsConstructor
 @Component
 public class BoardLogic {
 
@@ -31,15 +33,6 @@ public class BoardLogic {
     private final GameGraphics gfx;
     private final Collision collision;
     private final BoardModel model;
-
-    private Optional<OnePointObject> collisionPoint;
-
-    public BoardLogic(GameConfig gameConfig, GameGraphics gfx, Collision collision, BoardModel boardModel) {
-        this.gameConfig = gameConfig;
-        this.gfx = gfx;
-        this.collision = collision;
-        this.model = boardModel;
-    }
 
     public void init(Level level) {
         model.getObjects().clear();
@@ -60,7 +53,7 @@ public class BoardLogic {
 
         model.getObjects().forEach(OnePointObject::setRandomPosition);
         tryingToChangeDuplicatePosition(forbiddenAreas);
-        collisionPoint = Optional.empty();
+        model.setCollisionPoint(Optional.empty());
     }
 
     public boolean collisionWithPoint() {

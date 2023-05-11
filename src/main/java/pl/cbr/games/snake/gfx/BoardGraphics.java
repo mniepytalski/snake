@@ -65,7 +65,7 @@ public class BoardGraphics {
     int counter = 0;
     private void gameOver(Graphics g, Board board) {
         printRunningBoard(g, board);
-        board.getBoardLogic().getCollisionPoint().ifPresent(p -> {
+        model.getCollisionPoint().ifPresent(p -> {
             if ( counter++%2==0 ) gfx.drawOnePointObject(g, p);
         });
         printCenterText(g, board, Color.white, messages.getEndGame());
