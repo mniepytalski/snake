@@ -8,10 +8,6 @@ import pl.cbr.games.snake.objects.player.PlayerModel;
 @ToString(callSuper = true)
 public class Apple extends OnePointObject {
 
-    public Apple(GameLogic gameLogic) {
-        super(gameLogic);
-    }
-
     @Override
     public boolean isEndGame() {
         return false;
@@ -23,8 +19,8 @@ public class Apple extends OnePointObject {
     }
 
     @Override
-    public void actionOnPlayerHit(PlayerModel playerModel) {
+    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
         playerModel.addLength(5);
-        super.actionOnPlayerHit(playerModel);
+        super.actionOnPlayerHit(playerModel, gameLogic);
     }
 }

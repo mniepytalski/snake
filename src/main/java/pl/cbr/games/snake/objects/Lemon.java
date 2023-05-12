@@ -8,10 +8,6 @@ import pl.cbr.games.snake.objects.player.PlayerModel;
 @ToString(callSuper = true)
 public class Lemon extends OnePointObject {
 
-    public Lemon(GameLogic gameLogic) {
-        super(gameLogic);
-    }
-
     @Override
     public boolean isEndGame() {
         return false;
@@ -23,8 +19,8 @@ public class Lemon extends OnePointObject {
     }
 
     @Override
-    public void actionOnPlayerHit(PlayerModel playerModel) {
+    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
         playerModel.setLength(4);
-        super.actionOnPlayerHit(playerModel);
+        super.actionOnPlayerHit(playerModel, gameLogic);
     }
 }

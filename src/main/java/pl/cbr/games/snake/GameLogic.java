@@ -17,7 +17,6 @@ import pl.cbr.games.snake.objects.player.Player;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -27,15 +26,14 @@ import java.util.stream.IntStream;
 public class GameLogic {
 
     private final GameConfig gameConfig;
-
     private final Collision collision;
     private final GameModel model;
 
     public void initLevel(Level level) {
         model.getObjects().clear();
-        IntStream.rangeClosed(1, level.getApples()).forEach(n -> model.getObjects().add(new Apple(this)));
-        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> model.getObjects().add(new Wall(this)));
-        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> model.getObjects().add(new Lemon(this)));
+        IntStream.rangeClosed(1, level.getApples()).forEach(n -> model.getObjects().add(new Apple()));
+        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> model.getObjects().add(new Wall()));
+        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> model.getObjects().add(new Lemon()));
 
         model.clearBots();
         for (int i = 0; i < level.getBots(); i++) {
@@ -46,9 +44,9 @@ public class GameLogic {
                 .map(PlayerModel::getPlayerConfig)
                 .map(PlayerConfig::getPosition)
                 .map(PositionConfig::getPoint)
-                .map(point -> new Square(point,5)).collect(Collectors.toList());
+                .map(point -> new Square(point,5)).toList();
 
-        model.getObjects().forEach(OnePointObject::setRandomPosition);
+        model.getObjects().forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom()));
         tryingToChangeDuplicatePosition(forbiddenAreas);
         model.setCollisionPoint(null);
     }
@@ -76,14 +74,14 @@ public class GameLogic {
 
     private int getDuplicatesAndChangePosition() {
         Map<Point2D, List<OnePointObject>> duplicates = model.detectDuplicates();
-        duplicates.forEach((k,v) -> v.stream().skip(1).forEach(OnePointObject::setRandomPosition));
+        duplicates.forEach((k,v) -> v.stream().skip(1).forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom())));
         return duplicates.size();
     }
 
     private int changePositionFromForbiddenAreas(List<Square> forbiddenAreas) {
         List<OnePointObject> pointsToChange = model.getObjects().stream().filter(p ->
                 forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).toList();
-        pointsToChange.forEach(OnePointObject::setRandomPosition);
+        pointsToChange.forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom()));
         return pointsToChange.size();
     }
 }

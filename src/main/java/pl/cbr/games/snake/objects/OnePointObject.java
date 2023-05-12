@@ -17,14 +17,13 @@ public abstract class OnePointObject extends BaseObject {
 
     private Point2D position;
 
-    protected OnePointObject(GameLogic gameLogic) {
-        super(gameLogic);
+    protected OnePointObject() {
+        super();
         this.position = Point2D.of(0, 0);
     }
 
-    public void setRandomPosition() {
-        setPosition(Point2D.Random(gameLogic.getCollision().getBoard().getRightBottom().getX(),
-                gameLogic.getCollision().getBoard().getRightBottom().getY()));
+    public void setRandomPosition(Point2D maxValue) {
+        setPosition(Point2D.Random(maxValue.getX(), maxValue.getY()));
     }
 
     public void setPosition(Point2D point) {
@@ -35,9 +34,11 @@ public abstract class OnePointObject extends BaseObject {
         return null;
     }
 
-    public void actionOnPlayerHit(PlayerModel playerModel) {
+
+    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
         for ( int i=0; i<100; i++ ) {
-            setRandomPosition();
+            // TODO - read it from game model
+            setRandomPosition(gameLogic.getCollision().getBoard().getRightBottom());
             if (!gameLogic.collisionWithPoint()) {
                 break;
             }

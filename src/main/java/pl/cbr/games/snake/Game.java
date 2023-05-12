@@ -82,7 +82,7 @@ public class Game extends JPanel implements ActionListener, Drawing {
                         if (boardObject.isEndGame()) {
                             actionOnCollision(player, boardObject);
                         } else {
-                            boardObject.actionOnPlayerHit(player.getPlayerModel());
+                            boardObject.actionOnPlayerHit(player.getPlayerModel(), gameLogic);
                             if (player.getPlayerModel().getPoints() >= levelScenarios.getLevel().getPointsToFinish()
                                     && !player.isBot()) {
                                 levelScenarios.setNextLevel();

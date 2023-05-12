@@ -9,12 +9,9 @@ import java.util.UUID;
 @Data
 public abstract class BaseObject {
 
-    public final GameLogic gameLogic;
-
     final UUID uuid;
 
-    public BaseObject(GameLogic gameLogic) {
-        this.gameLogic = gameLogic;
+    public BaseObject() {
         uuid = UUID.randomUUID();
     }
 
@@ -22,7 +19,7 @@ public abstract class BaseObject {
         return true;
     }
 
-    public abstract void actionOnPlayerHit(PlayerModel playerModel);
+    public abstract void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic);
 
     public String toString() {
         return "uuid:"+uuid;

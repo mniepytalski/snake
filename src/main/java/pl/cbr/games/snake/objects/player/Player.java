@@ -19,7 +19,7 @@ public class Player extends OnePointObject {
     private final PlayerModel playerModel;
 
     public Player(GameLogic gameLogic, PlayerConfig playerConfig) {
-        super(gameLogic);
+        super();
         playerModel = new PlayerModel(gameLogic.getGameConfig(), playerConfig);
     }
 
@@ -50,7 +50,7 @@ public class Player extends OnePointObject {
     }
 
     @Override
-    public void actionOnPlayerHit(PlayerModel playerModel) {
+    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
 
     }
 }

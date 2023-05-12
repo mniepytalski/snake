@@ -71,7 +71,7 @@ public class Collision {
             return realPlayer;
         }
         if (board.isOutside(playerPosition)) {
-            return Optional.of(new RectObject(null));
+            return Optional.of(new RectObject());
         }
         return model.getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())).findFirst();
     }
@@ -82,10 +82,10 @@ public class Collision {
 
     public Optional<OnePointObject> checkCollision(Player player) {
         if ( check(player.getPlayerModel()) ) {
-            return Optional.of(new PlayerObject(null));
+            return Optional.of(new PlayerObject());
         }
         if (isOutside(player.getPlayerModel().getHead())) {
-            return Optional.of(new RectObject(null));
+            return Optional.of(new RectObject());
         }
         return Optional.empty();
     }
