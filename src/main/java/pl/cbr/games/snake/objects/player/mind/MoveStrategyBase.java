@@ -2,7 +2,6 @@ package pl.cbr.games.snake.objects.player.mind;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.OnePointObject;
@@ -20,15 +19,13 @@ public class MoveStrategyBase {
     MoveDirection startDirection;
 
     BotPlayer player;
-    GameLogic gameLogic;
     Collision collision;
 
     int moveDelay = 5;
     int counter = 0;
 
-    public MoveStrategyBase(BotPlayer player, GameLogic gameLogic, Collision collision) {
+    public MoveStrategyBase(BotPlayer player, Collision collision) {
         this.player = player;
-        this.gameLogic = gameLogic;
         this.collision = collision;
     }
 
@@ -38,10 +35,6 @@ public class MoveStrategyBase {
 
     private void youCanMove() {
         counter = 0;
-    }
-
-    private MoveDirection getDirection() {
-        return player.getPlayerState().getDirection();
     }
 
     Point2D calcNextPosition() {
@@ -61,16 +54,16 @@ public class MoveStrategyBase {
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
-                log.debug("step1:{}->{}",getStartDirection(), getDirection());
+                log.debug("step1:{}->{}",getStartDirection(), state.getDirection());
                 state.turnLeft(getStartDirection());
                 youCanMove();
-                log.debug("step2:{}->{}",getStartDirection(), getDirection());
+                log.debug("step2:{}->{}",getStartDirection(), state.getDirection());
                 collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 state.oppositeDirection();
                                 youCanMove();
-                                log.debug("step3:{}->{}", getStartDirection(), getDirection());
+                                log.debug("step3:{}->{}", getStartDirection(), state.getDirection());
                             }
                         }
                 );
@@ -91,15 +84,15 @@ public class MoveStrategyBase {
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
-                log.debug("step1:{}->{}",getStartDirection(), getDirection());
+                log.debug("step1:{}->{}",getStartDirection(), state.getDirection());
                 state.oppositeDirection();
                 youCanMove();
-                log.debug("step2:{}->{}",getStartDirection(), getDirection());
+                log.debug("step2:{}->{}",getStartDirection(), state.getDirection());
                 collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 player.getPlayerState().setDirection(startDirection);
-                                log.debug("step3:{}->{}", getStartDirection(), getDirection());
+                                log.debug("step3:{}->{}", getStartDirection(), state.getDirection());
                             }
                         }
                 );
