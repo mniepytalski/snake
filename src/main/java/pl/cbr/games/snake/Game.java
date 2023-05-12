@@ -39,7 +39,7 @@ public class Game extends JPanel implements ActionListener, Drawing {
     private void init() {
         model.setStatus(GameStatus.RUNNING);
         setSize(gameConfig.getWidth(), gameConfig.getHeight());
-        gameConfig.getPlayers().forEach(playerConfig -> model.addPlayer(new LivePlayer(gameLogic, playerConfig)));
+        gameConfig.getPlayers().forEach(playerConfig -> model.addPlayer(new LivePlayer(gameConfig.getDotsOnStart(), playerConfig)));
         addKeyListener(new GameKeyAdapter(this, model));
         setBackground(Color.black);
         setFocusable(true);

@@ -12,7 +12,7 @@ public class BotPlayer extends Player {
     private final MoveStrategy mind;
 
     public BotPlayer(GameLogic gameLogic, PlayerConfig playerConfig, Collision collision) {
-        super(gameLogic, playerConfig);
+        super(gameLogic.getGameConfig().getDotsOnStart(), playerConfig);
         playerState = new PlayerState();
         mind = new MoveStrategy( this, gameLogic, collision);
     }
@@ -21,7 +21,7 @@ public class BotPlayer extends Player {
     }
 
     public void move() {
-        mind.calculateMove();
+        mind.calculateMove(this);
         super.move();
     }
 }

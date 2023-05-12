@@ -12,16 +12,14 @@ import java.util.List;
 public class PlayerModel {
     private int length;
     private final List<Point2D> view;
-    private final GameConfig gameConfig;
-
+    private final int dotsOnStart;
     private final PlayerConfig playerConfig;
-
     private final DirectionService directionService;
     private int points;
 
-    public PlayerModel(GameConfig gameConfig, PlayerConfig playerConfig) {
+    public PlayerModel(int dotsOnStart, PlayerConfig playerConfig) {
         view = new ArrayList<>();
-        this.gameConfig = gameConfig;
+        this.dotsOnStart = dotsOnStart;
         this.playerConfig = playerConfig;
         directionService = new DirectionService();
     }
@@ -29,7 +27,7 @@ public class PlayerModel {
     public void initPlayer() {
         Point2D startPosition = playerConfig.getPosition().getPoint();
         view.clear();
-        this.length = gameConfig.getDotsOnStart();
+        this.length = dotsOnStart;
         initPlayerView(startPosition);
     }
 

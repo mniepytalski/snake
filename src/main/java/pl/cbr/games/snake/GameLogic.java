@@ -13,11 +13,9 @@ import pl.cbr.games.snake.geom2d.Square;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
-import pl.cbr.games.snake.objects.player.Player;
-import pl.cbr.games.snake.objects.player.PlayerModel;
+import pl.cbr.games.snake.objects.player.mind.MoveStrategy;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 @Slf4j
 @Getter
@@ -30,23 +28,14 @@ public class GameLogic {
     private final GameModel model;
 
     public void initLevel(Level level) {
-        model.getObjects().clear();
-        IntStream.rangeClosed(1, level.getApples()).forEach(n -> model.getObjects().add(new Apple()));
-        IntStream.rangeClosed(1, level.getWalls()).forEach(n -> model.getObjects().add(new Wall()));
-        IntStream.rangeClosed(1, level.getLemons()).forEach(n -> model.getObjects().add(new Lemon()));
+        model.initLevelObjects(level);
 
         model.clearBots();
         for (int i = 0; i < level.getBots(); i++) {
             model.addPlayer(new BotPlayer(this, new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), collision));
         }
-        List<Square> forbiddenAreas = model.getPlayers().stream()
-                .map(Player::getPlayerModel)
-                .map(PlayerModel::getPlayerConfig)
-                .map(PlayerConfig::getPosition)
-                .map(PositionConfig::getPoint)
-                .map(point -> new Square(point,5)).toList();
+        List<Square> forbiddenAreas = model.initPlayers();
 
-        model.getObjects().forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom()));
         tryingToChangeDuplicatePosition(forbiddenAreas);
         model.setCollisionPoint(null);
     }

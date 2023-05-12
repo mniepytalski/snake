@@ -12,7 +12,7 @@ public class MoveStrategy extends MoveStrategyBase {
         super(player, gameLogic, collision);
     }
 
-    public void calculateMove() {
+    public void calculateMove(BotPlayer player) {
         log.debug("move:{}", player.getPlayerState().getDirection());
         if ( canIMove() ) {
             changeDirectionIfPossible();

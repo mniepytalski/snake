@@ -1,2 +1,2 @@
-1. create game logic class
-2. do collision service
+1. remove Collision from BotPlayer
+2. BotPlayer remove logic with collision object

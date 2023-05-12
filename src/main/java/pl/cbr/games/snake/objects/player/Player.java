@@ -18,9 +18,8 @@ public class Player extends OnePointObject {
     PlayerState playerState;
     private final PlayerModel playerModel;
 
-    public Player(GameLogic gameLogic, PlayerConfig playerConfig) {
-        super();
-        playerModel = new PlayerModel(gameLogic.getGameConfig(), playerConfig);
+    public Player(int dotsOnStart, PlayerConfig playerConfig) {
+        playerModel = new PlayerModel(dotsOnStart, playerConfig);
     }
 
     public void init() {
@@ -36,6 +35,7 @@ public class Player extends OnePointObject {
         getPlayerState().keyPressed(e);
     }
 
+    // TODO - should be move to graphics object printPointsForPlayer
     public void printPoints(Graphics g, int id) {
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(getPlayerModel().getName()+": "+getPlayerModel().getPoints(),10,14*id);
