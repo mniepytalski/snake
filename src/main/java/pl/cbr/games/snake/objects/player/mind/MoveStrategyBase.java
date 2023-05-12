@@ -9,6 +9,7 @@ import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.BotPlayer;
 import pl.cbr.games.snake.objects.player.DirectionService;
 import pl.cbr.games.snake.objects.player.MoveDirection;
+import pl.cbr.games.snake.objects.player.PlayerState;
 
 import java.util.Optional;
 
@@ -35,43 +36,8 @@ public class MoveStrategyBase {
         return counter++ > moveDelay + (Math.random()*100);
     }
 
-    void oppositeDirection() {
-        switch(player.getPlayerState().getDirection()) {
-            case RIGHT -> setDirection(MoveDirection.LEFT);
-            case DOWN -> setDirection(MoveDirection.UP);
-            case LEFT -> setDirection(MoveDirection.RIGHT);
-            case UP -> setDirection(MoveDirection.DOWN);
-        }
-        youCanMove();
-    }
-
-    void turnLeft(MoveDirection startDirection) {
-        this.startDirection = startDirection;
-        switch(player.getPlayerState().getDirection()) {
-            case RIGHT -> setDirection(MoveDirection.UP);
-            case DOWN -> setDirection(MoveDirection.RIGHT);
-            case LEFT -> setDirection(MoveDirection.DOWN);
-            case UP -> setDirection(MoveDirection.LEFT);
-        }
-        youCanMove();
-    }
-
-    void turnRight() {
-        switch(player.getPlayerState().getDirection()) {
-            case RIGHT -> setDirection(MoveDirection.DOWN);
-            case DOWN -> setDirection(MoveDirection.LEFT);
-            case LEFT -> setDirection(MoveDirection.UP);
-            case UP -> setDirection(MoveDirection.RIGHT);
-        }
-        youCanMove();
-    }
-
     private void youCanMove() {
         counter = 0;
-    }
-
-    private void setDirection(MoveDirection direction) {
-        player.getPlayerState().setDirection(direction);
     }
 
     private MoveDirection getDirection() {
@@ -89,18 +55,21 @@ public class MoveStrategyBase {
     }
 
     void avoidingObstacles() {
-        startDirection = player.getPlayerState().getDirection();
+        PlayerState state = player.getPlayerState();
+        startDirection = state.getDirection();
         Point2D nextPosition = calcNextPosition();
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
-                turnLeft(getStartDirection());
+                state.turnLeft(getStartDirection());
+                youCanMove();
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
                 collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
-                                oppositeDirection();
+                                state.oppositeDirection();
+                                youCanMove();
                                 log.debug("step3:{}->{}", getStartDirection(), getDirection());
                             }
                         }
@@ -110,23 +79,26 @@ public class MoveStrategyBase {
     }
 
     void changeDirectionIfPossible() {
+        PlayerState state = player.getPlayerState();
         startDirection = player.getPlayerState().getDirection();
         if (Math.random() > 0.5) {
-            turnLeft(startDirection);
+            state.turnLeft(startDirection);
         } else {
-            turnRight();
+            state.turnRight();
         }
+        youCanMove();
         Point2D nextPosition = calcNextPosition();
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
                 log.debug("step1:{}->{}",getStartDirection(), getDirection());
-                oppositeDirection();
+                state.oppositeDirection();
+                youCanMove();
                 log.debug("step2:{}->{}",getStartDirection(), getDirection());
                 collision.check(calcNextPosition()).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
-                                setDirection(startDirection);
+                                player.getPlayerState().setDirection(startDirection);
                                 log.debug("step3:{}->{}", getStartDirection(), getDirection());
                             }
                         }
