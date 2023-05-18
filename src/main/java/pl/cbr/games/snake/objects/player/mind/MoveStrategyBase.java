@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.OnePointObject;
-import pl.cbr.games.snake.objects.player.BotPlayer;
-import pl.cbr.games.snake.objects.player.DirectionService;
-import pl.cbr.games.snake.objects.player.MoveDirection;
-import pl.cbr.games.snake.objects.player.PlayerState;
+import pl.cbr.games.snake.objects.player.*;
 
 import java.util.Optional;
 
@@ -18,13 +15,13 @@ public class MoveStrategyBase {
 
     MoveDirection startDirection;
 
-    BotPlayer player;
+    Player player;
     Collision collision;
 
     int moveDelay = 5;
     int counter = 0;
 
-    public MoveStrategyBase(BotPlayer player, Collision collision) {
+    public MoveStrategyBase(Player player, Collision collision) {
         this.player = player;
         this.collision = collision;
     }

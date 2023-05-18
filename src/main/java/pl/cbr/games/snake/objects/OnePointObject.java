@@ -4,8 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.GameResource;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
@@ -35,11 +35,10 @@ public abstract class OnePointObject extends BaseObject {
     }
 
 
-    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
+    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision) {
         for ( int i=0; i<100; i++ ) {
-            // TODO - read it from game model
-            setRandomPosition(gameLogic.getCollision().getBoard().getRightBottom());
-            if (!gameLogic.collisionWithPoint()) {
+            setRandomPosition(collision.getBoard().getRightBottom());
+            if(collision.check(position).isPresent()) {
                 break;
             }
         }

@@ -1,7 +1,7 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.Data;
-import pl.cbr.games.snake.GameLogic;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.UUID;
@@ -19,7 +19,7 @@ public abstract class BaseObject {
         return true;
     }
 
-    public abstract void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic);
+    public abstract void actionOnPlayerHit(PlayerModel playerModel, Collision collision);
 
     public String toString() {
         return "uuid:"+uuid;

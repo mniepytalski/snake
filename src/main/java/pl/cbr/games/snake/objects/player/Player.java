@@ -3,8 +3,8 @@ package pl.cbr.games.snake.objects.player;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import pl.cbr.games.snake.GameLogic;
 import pl.cbr.games.snake.config.PlayerConfig;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.OnePointObject;
 
 import java.awt.*;
@@ -50,7 +50,7 @@ public class Player extends OnePointObject {
     }
 
     @Override
-    public void actionOnPlayerHit(PlayerModel playerModel, GameLogic gameLogic) {
+    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision) {
 
     }
 }
