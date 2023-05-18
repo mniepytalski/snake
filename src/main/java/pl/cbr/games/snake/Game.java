@@ -12,6 +12,7 @@ import pl.cbr.games.snake.levels.LevelScenarios;
 import pl.cbr.games.snake.objects.OnePointObject;
 import pl.cbr.games.snake.objects.player.LivePlayer;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.sound.GameSound;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,7 @@ public class Game extends JPanel implements ActionListener, Drawing {
     private final SystemTimer systemTimer;
     private final transient GameConfig gameConfig;
     private final transient BoardGraphics boardGraphics;
-    private final transient ResourceLoader resourceLoader;
+    private final GameSound sound;
     private final transient GameLogic gameLogic;
     private final transient LevelScenarios levelScenarios;
 
@@ -87,9 +88,9 @@ public class Game extends JPanel implements ActionListener, Drawing {
                                     && !player.isBot()) {
                                 levelScenarios.setNextLevel();
                                 model.setStatus(GameStatus.NEXT_LEVEL);
-                                resourceLoader.playSound("nextLevel");
+                                sound.playNextLevel();
                             } else {
-                                resourceLoader.playSound("eating1");
+                                sound.playEating();
                             }
                         }
                     }
