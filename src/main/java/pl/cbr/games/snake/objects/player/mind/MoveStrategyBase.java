@@ -15,14 +15,12 @@ public class MoveStrategyBase {
 
     MoveDirection startDirection;
 
-    Player player;
     Collision collision;
 
     int moveDelay = 5;
     int counter = 0;
 
-    public MoveStrategyBase(Player player, Collision collision) {
-        this.player = player;
+    public MoveStrategyBase(Collision collision) {
         this.collision = collision;
     }
 
@@ -34,20 +32,17 @@ public class MoveStrategyBase {
         counter = 0;
     }
 
-    Point2D calcNextPosition() {
-        return calcNextPosition(player.getPlayerModel().getHead());
-    }
-
-    Point2D calcNextPosition(Point2D nextPosition) {
+    Point2D calcNextPosition(Player player) {
+        Point2D nextPosition = player.getPlayerModel().getHead();
         DirectionService directionService = new DirectionService();
         Point2D moveVector = directionService.getVector(player.getPlayerState().getDirection());
         return nextPosition.add(moveVector);
     }
 
-    void avoidingObstacles() {
+    void avoidingObstacles(Player player) {
         PlayerState state = player.getPlayerState();
         startDirection = state.getDirection();
-        Point2D nextPosition = calcNextPosition();
+        Point2D nextPosition = calcNextPosition(player);
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
@@ -55,7 +50,7 @@ public class MoveStrategyBase {
                 state.turnLeft(getStartDirection());
                 youCanMove();
                 log.debug("step2:{}->{}",getStartDirection(), state.getDirection());
-                collision.check(calcNextPosition()).ifPresent(
+                collision.check(calcNextPosition(player)).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 state.oppositeDirection();
@@ -68,7 +63,7 @@ public class MoveStrategyBase {
         }
     }
 
-    void changeDirectionIfPossible() {
+    void changeDirectionIfPossible(Player player) {
         PlayerState state = player.getPlayerState();
         startDirection = player.getPlayerState().getDirection();
         if (Math.random() > 0.5) {
@@ -77,7 +72,7 @@ public class MoveStrategyBase {
             state.turnRight();
         }
         youCanMove();
-        Point2D nextPosition = calcNextPosition();
+        Point2D nextPosition = calcNextPosition(player);
         Optional<? extends OnePointObject> optionalBoardObject = collision.check(nextPosition);
         if ( optionalBoardObject.isPresent()) {
             if ( optionalBoardObject.get().isEndGame() ) {
@@ -85,7 +80,7 @@ public class MoveStrategyBase {
                 state.oppositeDirection();
                 youCanMove();
                 log.debug("step2:{}->{}",getStartDirection(), state.getDirection());
-                collision.check(calcNextPosition()).ifPresent(
+                collision.check(calcNextPosition(player)).ifPresent(
                         boardObject -> {
                             if ( boardObject.isEndGame() ) {
                                 player.getPlayerState().setDirection(startDirection);

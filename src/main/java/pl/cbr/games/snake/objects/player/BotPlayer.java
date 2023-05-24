@@ -13,7 +13,7 @@ public class BotPlayer extends Player {
     public BotPlayer(int dotsOnStart, PlayerConfig playerConfig, Collision collision) {
         super(dotsOnStart, playerConfig);
         playerState = new PlayerState();
-        mind = new MoveStrategy( this, collision);
+        mind = new MoveStrategy(collision);
     }
 
     public void keyPressed(KeyEvent e) {

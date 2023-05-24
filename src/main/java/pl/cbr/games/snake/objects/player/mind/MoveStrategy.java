@@ -7,16 +7,16 @@ import pl.cbr.games.snake.objects.player.BotPlayer;
 @Slf4j
 public class MoveStrategy extends MoveStrategyBase {
 
-    public MoveStrategy(BotPlayer player, Collision collision) {
-        super(player, collision);
+    public MoveStrategy(Collision collision) {
+        super(collision);
     }
 
     public void calculateMove(BotPlayer player) {
         log.debug("move:{}", player.getPlayerState().getDirection());
         if ( canIMove() ) {
-            changeDirectionIfPossible();
+            changeDirectionIfPossible(player);
         } else {
-            avoidingObstacles();
+            avoidingObstacles(player);
         }
     }
 }
