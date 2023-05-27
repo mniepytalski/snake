@@ -10,7 +10,7 @@ import java.util.UUID;
 public abstract class BaseObject {
 
     final UUID uuid;
-
+    
     public BaseObject() {
         uuid = UUID.randomUUID();
     }

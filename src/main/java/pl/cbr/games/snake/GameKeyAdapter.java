@@ -15,12 +15,12 @@ public class GameKeyAdapter extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        log.debug("{} key",(new StringBuffer()).append(e.getKeyChar()));
         model.getPlayers().forEach(player -> player.keyPressed(e));
         switch(e.getKeyCode()) {
             case KeyEvent.VK_R -> startLogic();
             case KeyEvent.VK_P -> pauseLogic();
         }
-        log.debug("{} key",(new StringBuffer()).append(e.getKeyChar()));
     }
 
     private void startLogic() {

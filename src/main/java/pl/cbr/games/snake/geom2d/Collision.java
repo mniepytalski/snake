@@ -26,8 +26,7 @@ public class Collision {
     public Collision(GameConfig gameConfig, GameModel model) {
         this.gameConfig = gameConfig;
         this.model = model;
-        board = new Rectangle(Point2D.of(0, 0),
-                (new Point2D(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
+        board = model.getBoard();
     }
     public boolean isOutside(Point2D position) {
         return board.isOutside(position);

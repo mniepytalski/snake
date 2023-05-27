@@ -13,6 +13,7 @@ import pl.cbr.games.snake.geom2d.Square;
 import pl.cbr.games.snake.levels.Level;
 import pl.cbr.games.snake.objects.*;
 import pl.cbr.games.snake.objects.player.BotPlayer;
+import pl.cbr.games.snake.objects.player.mind.MoveStrategy;
 
 import java.util.*;
 
@@ -25,13 +26,14 @@ public class GameLogic {
     private final GameConfig gameConfig;
     private final Collision collision;
     private final GameModel model;
+    private final MoveStrategy moveStrategy;
 
     public void initLevel(Level level) {
         model.initLevelObjects(level);
 
         model.clearBots();
         for (int i = 0; i < level.getBots(); i++) {
-            model.addPlayer(new BotPlayer(gameConfig.getDotsOnStart(), new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), collision));
+            model.addPlayer(new BotPlayer(gameConfig.getDotsOnStart(), new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), moveStrategy));
         }
         List<Square> forbiddenAreas = model.initPlayers();
 
