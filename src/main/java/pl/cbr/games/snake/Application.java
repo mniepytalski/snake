@@ -12,13 +12,13 @@ import javax.swing.*;
 @SpringBootApplication
 public class Application {
 
-    private final Board board;
+    private final Game game;
     private final Messages messages;
 
     @Bean
     public JFrame frame() {
         JFrame frame = new JFrame(messages.getTitle());
-        frame.add(board);
+        frame.add(game);
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);

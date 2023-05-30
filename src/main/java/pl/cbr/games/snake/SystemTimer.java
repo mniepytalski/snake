@@ -11,6 +11,11 @@ public class SystemTimer {
 
     private Timer timer;
 
+    public void initAndStart(ActionListener listener) {
+        init(listener);
+        start();
+    }
+
     public void init(ActionListener listener) {
         timer = new Timer(DELAY, listener);
     }
@@ -19,10 +24,6 @@ public class SystemTimer {
         if ( !timer.isRunning() ) {
             timer.start();
         }
-    }
-
-    public void stop() {
-        timer.stop();
     }
 
     public boolean isRunning() {

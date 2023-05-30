@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import pl.cbr.games.snake.*;
 import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.MessagesConfig;
+import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.awt.*;
 
@@ -14,8 +16,9 @@ import java.awt.*;
 public class BoardGraphics {
 
     private final GameConfig gameConfig;
+    private final GameModel model;
     private final MessagesConfig messages;
-    private final ResourceLoader resourceLoader;
+    private final GameGraphics gfx;
 
     private static final String FONT_TYPE = "Courier";
 
@@ -29,67 +32,64 @@ public class BoardGraphics {
         }
     }
 
-    public void init(Board board) {
-        board.setBackground(Color.black);
-        board.setFocusable(true);
-        Dimension dimension = new Dimension(gameConfig.getWidth(), gameConfig.getHeight());
-        board.setPreferredSize(dimension);
-    }
-
-    public void printBoard(GameStatus gameStatus, Graphics g, Board board) {
+    public void printBoard(GameStatus gameStatus, Graphics g, Game game) {
         switch(gameStatus) {
-            case START_LOGO -> printStartLogo(g, board);
-            case RUNNING -> printRunningBoard(g, board);
-            case STOP -> gameOver(g, board);
-            case PAUSED -> gamePaused(g, board);
-            case NEXT_LEVEL -> nextLevel(g, board);
+            case START_LOGO -> printStartLogo(g, game);
+            case RUNNING -> printRunningBoard(g, game);
+            case STOP -> gameOver(g, game);
+            case PAUSED -> gamePaused(g, game);
+            case NEXT_LEVEL -> nextLevel(g, game);
         }
     }
 
-    private void printStartLogo(Graphics g, Board board) {
-        g.drawImage(resourceLoader.get(GameResource.START_LOGO), 0, 0, null);
-        printCenterText(g, board, Color.white, messages.getStartGame());
+    private void printStartLogo(Graphics g, Game game) {
+        gfx.drawImage(g, GameResource.START_LOGO, Point2D.of(0, 0));
+        printCenterText(g, game, Color.white, messages.getStartGame());
     }
 
-    private void printRunningBoard(Graphics g, Board board) {
-        board.getBoardModel().getObjects().forEach(objectToDraw -> objectToDraw.doDrawing(g));
-        board.getBoardModel().getPlayers().forEach( objectToDraw -> objectToDraw.doDrawing(g));
+    private void printRunningBoard(Graphics g, Game game) {
+        model.getObjects().forEach(objectToDraw -> gfx.drawOnePointObject(g, objectToDraw));
+        model.getPlayers().forEach(objectToDraw -> gfx.drawPlayer(g, objectToDraw));
         if ( gameConfig.isLattice()) {
             drawLattice(g);
         }
         g.setColor(Color.LIGHT_GRAY);
-        g.drawString(format(messages.getLevelInfo(), (board.getLevelScenarios().getActualLevel()+1)), 80, 14);
-        g.drawString(format(messages.getAllPointsToFinish(), board.getLevelScenarios().getLevel().getPointsToFinish()), 140, 14);
+        g.drawString(format(messages.getLevelInfo(), (game.getLevelScenarios().getActualLevel()+1)), 80, 14);
+        g.drawString(format(messages.getAllPointsToFinish(), game.getLevelScenarios().getLevel().getPointsToFinish()), 140, 14);
 
         int id = 1;
-        for (Player player : board.getBoardModel().getPlayers()) {
-            player.printPoints(g,id++);
+        for (Player player : model.getPlayers()) {
+            printPoints(player.getPlayerModel(), g,id++);
         }
+    }
+    private void printPoints(PlayerModel playerModel, Graphics g, int id) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawString(playerModel.getName()+": "+playerModel.getPoints(),10,14*id);
     }
 
     int counter = 0;
-    private void gameOver(Graphics g, Board board) {
-        printRunningBoard(g, board);
-        board.getBoardModel().getCollisionPoint().ifPresent(p -> {
-            if ( counter++%2==0 ) p.doDrawing(g);
-        });
-        printCenterText(g, board, Color.white, messages.getEndGame());
+    private void gameOver(Graphics g, Game game) {
+        printRunningBoard(g, game);
+        if (model.getCollisionPoint() != null) {
+            if ( counter++%2==0 ) gfx.drawOnePointObject(g, model.getCollisionPoint());
+        }
+        printCenterText(g, game, Color.white, messages.getEndGame());
     }
 
-    private void nextLevel(Graphics g, Board board) {
-        printRunningBoard(g, board);
-        String message = format(messages.getNextLevel(),board.getLevelScenarios().getActualLevel());
-        printCenterText(g, board, Color.white, message);
+    private void nextLevel(Graphics g, Game game) {
+        printRunningBoard(g, game);
+        String message = format(messages.getNextLevel(), game.getLevelScenarios().getActualLevel());
+        printCenterText(g, game, Color.white, message);
     }
 
-    private void gamePaused(Graphics g, Board board) {
-        printRunningBoard(g, board);
-        printCenterText(g, board, Color.cyan, messages.getPausedGame());
+    private void gamePaused(Graphics g, Game game) {
+        printRunningBoard(g, game);
+        printCenterText(g, game, Color.cyan, messages.getPausedGame());
     }
 
-    private void printCenterText(Graphics g, Board board, Color color, String text) {
+    private void printCenterText(Graphics g, Game game, Color color, String text) {
         Font small = new Font(FONT_TYPE, Font.BOLD, 24);
-        FontMetrics fontMetrics = board.getFontMetrics(small);
+        FontMetrics fontMetrics = game.getFontMetrics(small);
         g.setColor(color);
         g.setFont(small);
         g.drawString(text,

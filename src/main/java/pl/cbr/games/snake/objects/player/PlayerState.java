@@ -51,4 +51,32 @@ public class PlayerState {
             direction = MoveDirection.DOWN;
         }
     }
+
+    public void oppositeDirection() {
+        switch(getDirection()) {
+            case RIGHT -> setDirection(MoveDirection.LEFT);
+            case DOWN -> setDirection(MoveDirection.UP);
+            case LEFT -> setDirection(MoveDirection.RIGHT);
+            case UP -> setDirection(MoveDirection.DOWN);
+        }
+    }
+
+    public void turnLeft(MoveDirection startDirection) {
+        this.direction = startDirection;
+        switch(getDirection()) {
+            case RIGHT -> setDirection(MoveDirection.UP);
+            case DOWN -> setDirection(MoveDirection.RIGHT);
+            case LEFT -> setDirection(MoveDirection.DOWN);
+            case UP -> setDirection(MoveDirection.LEFT);
+        }
+    }
+
+    public void turnRight() {
+        switch(getDirection()) {
+            case RIGHT -> setDirection(MoveDirection.DOWN);
+            case DOWN -> setDirection(MoveDirection.LEFT);
+            case LEFT -> setDirection(MoveDirection.UP);
+            case UP -> setDirection(MoveDirection.RIGHT);
+        }
+    }
 }

@@ -1,12 +1,14 @@
 package pl.cbr.games.snake.objects;
 
-import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.ResourceLoader;
-import pl.cbr.games.snake.config.GameConfig;
+
+import pl.cbr.games.snake.GameModel;
+import pl.cbr.games.snake.geom2d.Collision;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 public class RectObject extends OnePointObject {
 
-    public RectObject(GameConfig gameConfig, ResourceLoader resourceLoader, BoardModel boardModel) {
-        super(gameConfig, boardModel, resourceLoader);
+    @Override
+    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision, GameModel model) {
+
     }
 }

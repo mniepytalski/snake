@@ -1,10 +1,8 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.Data;
-import lombok.ToString;
-import pl.cbr.games.snake.BoardModel;
-import pl.cbr.games.snake.ResourceLoader;
-import pl.cbr.games.snake.config.GameConfig;
+import pl.cbr.games.snake.GameModel;
+import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.util.UUID;
@@ -12,16 +10,9 @@ import java.util.UUID;
 @Data
 public abstract class BaseObject {
 
-    public final BoardModel boardModel;
-    public final GameConfig gameConfig;
-    public final ResourceLoader resourceLoader;
-
     final UUID uuid;
-
-    public BaseObject(BoardModel boardModel, GameConfig gameConfig, ResourceLoader resourceLoader) {
-        this.boardModel = boardModel;
-        this.gameConfig = gameConfig;
-        this.resourceLoader = resourceLoader;
+    
+    public BaseObject() {
         uuid = UUID.randomUUID();
     }
 
@@ -29,7 +20,7 @@ public abstract class BaseObject {
         return true;
     }
 
-    public abstract void actionOnPlayerHit(PlayerModel playerModel);
+    public abstract void actionOnPlayerHit(PlayerModel playerModel, Collision collision, GameModel model);
 
     public String toString() {
         return "uuid:"+uuid;
