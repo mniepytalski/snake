@@ -8,7 +8,6 @@ import pl.cbr.games.snake.config.PlayerConfig;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.OnePointObject;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,12 +33,6 @@ public class Player extends OnePointObject {
 
     public void keyPressed(KeyEvent e) {
         getPlayerState().keyPressed(e);
-    }
-
-    // TODO - should be move to graphics object printPointsForPlayer
-    public void printPoints(Graphics g, int id) {
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawString(getPlayerModel().getName()+": "+getPlayerModel().getPoints(),10,14*id);
     }
 
     public boolean isBot() {

@@ -7,6 +7,7 @@ import pl.cbr.games.snake.config.GameConfig;
 import pl.cbr.games.snake.config.MessagesConfig;
 import pl.cbr.games.snake.geom2d.Point2D;
 import pl.cbr.games.snake.objects.player.Player;
+import pl.cbr.games.snake.objects.player.PlayerModel;
 
 import java.awt.*;
 
@@ -58,8 +59,12 @@ public class BoardGraphics {
 
         int id = 1;
         for (Player player : model.getPlayers()) {
-            player.printPoints(g,id++);
+            printPoints(player.getPlayerModel(), g,id++);
         }
+    }
+    private void printPoints(PlayerModel playerModel, Graphics g, int id) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawString(playerModel.getName()+": "+playerModel.getPoints(),10,14*id);
     }
 
     int counter = 0;
