@@ -1,6 +1,7 @@
 package pl.cbr.games.snake.objects;
 
 import lombok.ToString;
+import pl.cbr.games.snake.GameModel;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.objects.player.PlayerModel;
@@ -19,8 +20,8 @@ public class Apple extends OnePointObject {
     }
 
     @Override
-    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision) {
+    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision, GameModel model) {
         playerModel.addLength(5);
-        super.actionOnPlayerHit(playerModel, collision);
+        super.actionOnPlayerHit(playerModel, collision, model);
     }
 }

@@ -64,14 +64,14 @@ public class GameLogic {
 
     private int getDuplicatesAndChangePosition() {
         Map<Point2D, List<OnePointObject>> duplicates = model.detectDuplicates();
-        duplicates.forEach((k,v) -> v.stream().skip(1).forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom())));
+        duplicates.forEach((k,v) -> v.stream().skip(1).forEach(o -> o.setRandomPosition(model.getBoard().getRightBottom())));
         return duplicates.size();
     }
 
     private int changePositionFromForbiddenAreas(List<Square> forbiddenAreas) {
         List<OnePointObject> pointsToChange = model.getObjects().stream().filter(p ->
                 forbiddenAreas.stream().anyMatch(area -> area.isInside(p.getPosition()))).toList();
-        pointsToChange.forEach(o -> o.setRandomPosition(collision.getBoard().getRightBottom()));
+        pointsToChange.forEach(o -> o.setRandomPosition(model.getBoard().getRightBottom()));
         return pointsToChange.size();
     }
 }

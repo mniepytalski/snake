@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.cbr.games.snake.GameModel;
 import pl.cbr.games.snake.GameResource;
 import pl.cbr.games.snake.geom2d.Collision;
 import pl.cbr.games.snake.geom2d.Point2D;
@@ -35,9 +36,9 @@ public abstract class OnePointObject extends BaseObject {
     }
 
 
-    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision) {
+    public void actionOnPlayerHit(PlayerModel playerModel, Collision collision, GameModel model) {
         for ( int i=0; i<100; i++ ) {
-            setRandomPosition(collision.getBoard().getRightBottom());
+            setRandomPosition(model.getBoard().getRightBottom());
             if(collision.check(position).isPresent()) {
                 break;
             }

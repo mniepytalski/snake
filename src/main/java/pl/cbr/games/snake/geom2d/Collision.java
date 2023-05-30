@@ -21,15 +21,13 @@ public class Collision {
     private final GameConfig gameConfig;
     private final GameModel model;
 
-    private final Rectangle board;
 
     public Collision(GameConfig gameConfig, GameModel model) {
         this.gameConfig = gameConfig;
         this.model = model;
-        board = model.getBoard();
     }
     public boolean isOutside(Point2D position) {
-        return board.isOutside(position);
+        return model.getBoard().isOutside(position);
     }
 
     public boolean check(List<Point2D> points) {
@@ -69,7 +67,7 @@ public class Collision {
         if (realPlayer.isPresent()) {
             return realPlayer;
         }
-        if (board.isOutside(playerPosition)) {
+        if (model.getBoard().isOutside(playerPosition)) {
             return Optional.of(new RectObject());
         }
         return model.getObjects().stream().filter(wall -> playerPosition.equals(wall.getPosition())).findFirst();
