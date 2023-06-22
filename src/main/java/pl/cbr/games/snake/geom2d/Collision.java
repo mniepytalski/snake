@@ -21,7 +21,6 @@ public class Collision {
     private final GameConfig gameConfig;
     private final GameModel model;
 
-
     public Collision(GameConfig gameConfig, GameModel model) {
         this.gameConfig = gameConfig;
         this.model = model;

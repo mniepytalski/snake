@@ -3,7 +3,7 @@ package pl.cbr.games.snake.levels;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @Data
 public class Level {
     private int pointsToFinish;
