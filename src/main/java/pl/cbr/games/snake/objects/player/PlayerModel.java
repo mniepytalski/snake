@@ -32,7 +32,7 @@ public class PlayerModel {
 
     private void initPlayerView(Point2D startPosition) {
         for (int z = 0; z < getLength(); z++) {
-            view.add((new Point2D(startPosition.getX() - z, startPosition.getY())));
+            view.add((Point2D.of(startPosition.getX() - z, startPosition.getY())));
         }
         points = 0;
     }

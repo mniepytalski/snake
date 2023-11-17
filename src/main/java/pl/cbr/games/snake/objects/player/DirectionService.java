@@ -15,10 +15,10 @@ public class DirectionService {
 
     private void prepareDirectionMap() {
         directions.clear();
-        directions.put(MoveDirection.LEFT, new Point2D(-1,0));
-        directions.put(MoveDirection.RIGHT, new Point2D(1,0));
-        directions.put(MoveDirection.UP, new Point2D(0,-1));
-        directions.put(MoveDirection.DOWN, new Point2D(0,1));
+        directions.put(MoveDirection.LEFT, Point2D.of(-1,0));
+        directions.put(MoveDirection.RIGHT, Point2D.of(1,0));
+        directions.put(MoveDirection.UP, Point2D.of(0,-1));
+        directions.put(MoveDirection.DOWN, Point2D.of(0,1));
     }
 
     public Point2D getVector(MoveDirection direction) {

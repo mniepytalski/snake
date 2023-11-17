@@ -1,12 +1,11 @@
 package pl.cbr.games.snake.geom2d;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of", access = AccessLevel.PUBLIC)
 public class Point2D {
     private int x;
     private int y;
@@ -15,9 +14,6 @@ public class Point2D {
         this(point.getX(), point.getY());
     }
 
-    public static Point2D of(int x, int y) {
-        return new Point2D(x, y);
-    }
 
     public Point2D add(Point2D a) {
         return new Point2D(x + a.getX(), y + a.getY());
@@ -50,9 +46,5 @@ public class Point2D {
 
     public static Point2D Random(int x, int y) {
         return new Point2D((int) (Math.random() * x ), (int) (Math.random() * y ));
-    }
-
-    public String toString() {
-        return "(x:"+x+",y:"+y+")";
     }
 }

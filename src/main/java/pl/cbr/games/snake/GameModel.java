@@ -40,7 +40,7 @@ public class GameModel {
     public GameModel(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
         board = new Rectangle(Point2D.of(0, 0),
-                (new Point2D(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
+                (Point2D.of(gameConfig.getWidth(), gameConfig.getHeight())).division(gameConfig.getDotSize()));
     }
 
     public void initLevelObjects(Level level) {

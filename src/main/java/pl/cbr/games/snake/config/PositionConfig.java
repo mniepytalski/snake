@@ -13,6 +13,6 @@ public class PositionConfig {
     private int y;
 
     public Point2D getPoint() {
-        return new Point2D(x,y);
+        return Point2D.of(x,y);
     }
 }
