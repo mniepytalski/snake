@@ -1,14 +1,14 @@
 package pl.cbr.games.snake.levels;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
 @AllArgsConstructor(staticName = "of")
-@Data
+@Value
 public class Level {
-    private int pointsToFinish;
-    private int apples;
-    private int walls;
-    private int lemons;
-    private int bots;
+    int pointsToFinish;
+    int apples;
+    int walls;
+    int lemons;
+    int bots;
 }

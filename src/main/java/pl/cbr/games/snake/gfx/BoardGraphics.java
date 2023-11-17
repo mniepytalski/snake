@@ -22,6 +22,9 @@ public class BoardGraphics {
 
     private static final String FONT_TYPE = "Courier";
 
+    int counter = 0;
+
+
     public void drawLattice(Graphics g) {
         g.setColor(Color.GRAY);
         for ( int x=gameConfig.getDotSize(); x<=gameConfig.getWidth(); x+=gameConfig.getDotSize()) {
@@ -46,7 +49,6 @@ public class BoardGraphics {
         gfx.drawImage(g, GameResource.START_LOGO, Point2D.of(0, 0));
         printCenterText(g, game, Color.white, messages.getStartGame());
     }
-
     private void printRunningBoard(Graphics g, Game game) {
         model.getObjects().forEach(objectToDraw -> gfx.drawOnePointObject(g, objectToDraw));
         model.getPlayers().forEach(objectToDraw -> gfx.drawPlayer(g, objectToDraw));
@@ -62,12 +64,11 @@ public class BoardGraphics {
             printPoints(player.getPlayerModel(), g,id++);
         }
     }
+
     private void printPoints(PlayerModel playerModel, Graphics g, int id) {
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(playerModel.getName()+": "+playerModel.getPoints(),10,14*id);
     }
-
-    int counter = 0;
     private void gameOver(Graphics g, Game game) {
         printRunningBoard(g, game);
         if (model.getCollisionPoint() != null) {

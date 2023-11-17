@@ -18,17 +18,17 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class ResourceLoader {
+    private static final String IMAGES_DIR = "data/";
 
     private final Map<GameResource, Image> resources = new HashMap<>();
 
     private final ResourcesConfig resourcesConfig;
 
+
     public ResourceLoader(ResourcesConfig resourcesConfig) {
         this.resourcesConfig = resourcesConfig;
         loadImages();
     }
-
-    private static final String IMAGES_DIR = "data/";
 
     private void loadImages() {
         try {

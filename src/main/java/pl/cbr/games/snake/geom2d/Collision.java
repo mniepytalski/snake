@@ -13,7 +13,6 @@ import pl.cbr.games.snake.objects.player.PlayerModel;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @Getter
 @Component
 public class Collision {
