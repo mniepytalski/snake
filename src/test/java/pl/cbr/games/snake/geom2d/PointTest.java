@@ -7,8 +7,8 @@ public class PointTest {
     @Test
     public void testAddition() {
         // given
-        Point2D pointA = new Point2D(10,10);
-        Point2D pointB = new Point2D(20,30);
+        Point2D pointA = Point2D.of(10,10);
+        Point2D pointB = Point2D.of(20,30);
 
         //
         Point2D pointC = pointA.add(pointB);
@@ -21,8 +21,8 @@ public class PointTest {
     @Test
     public void testMinus() {
         // given
-        Point2D pointA = new Point2D(20,30);
-        Point2D pointB = new Point2D(10,10);
+        Point2D pointA = Point2D.of(20,30);
+        Point2D pointB = Point2D.of(10,10);
 
         //
         Point2D pointC = pointA.minus(pointB);
@@ -35,8 +35,8 @@ public class PointTest {
     @Test
     public void testSet() {
         // given
-        Point2D pointA = new Point2D(20,30);
-        Point2D pointB = new Point2D(10,10);
+        Point2D pointA = Point2D.of(20,30);
+        Point2D pointB = Point2D.of(10,10);
 
         //
         pointA.set(pointB);
@@ -49,10 +49,10 @@ public class PointTest {
     @Test
     public void testConstructor() {
         // given
-        Point2D pointA = new Point2D(20,30);
+        Point2D pointA = Point2D.of(20,30);
 
         //
-        Point2D pointB = new Point2D(pointA);
+        Point2D pointB = Point2D.of(pointA);
 
         //
         Assertions.assertEquals(20, pointB.getX());
@@ -62,7 +62,7 @@ public class PointTest {
     @Test
     public void testMultiply() {
         // given
-        Point2D pointA = new Point2D(20,30);
+        Point2D pointA = Point2D.of(20,30);
         int value = 10;
 
         //
@@ -76,7 +76,7 @@ public class PointTest {
     @Test
     public void testDivision() {
         // given
-        Point2D pointA = new Point2D(200,300);
+        Point2D pointA = Point2D.of(200,300);
         int value = 10;
 
         //

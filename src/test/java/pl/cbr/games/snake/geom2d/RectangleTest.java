@@ -8,8 +8,8 @@ public class RectangleTest {
     @Test
     public void isOutsideTestFalse() {
         // given
-        Rectangle rectangle = new Rectangle(new Point2D(0,0), new Point2D(200,100));
-        Point2D point = new Point2D(100,50);
+        Rectangle rectangle = new Rectangle(Point2D.of(0,0), Point2D.of(200,100));
+        Point2D point = Point2D.of(100,50);
 
         //
         boolean test = rectangle.isOutside(point);
@@ -21,8 +21,8 @@ public class RectangleTest {
     @Test
     public void isOutsideTestTrue() {
         // given
-        Rectangle rectangle = new Rectangle(new Point2D(0,0), new Point2D(200,100));
-        Point2D point = new Point2D(300,50);
+        Rectangle rectangle = new Rectangle(Point2D.of(0,0), Point2D.of(200,100));
+        Point2D point = Point2D.of(300,50);
 
         //
         boolean test = rectangle.isOutside(point);

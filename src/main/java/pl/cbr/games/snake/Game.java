@@ -14,11 +14,11 @@ import pl.cbr.games.snake.objects.player.LivePlayer;
 import pl.cbr.games.snake.objects.player.Player;
 import pl.cbr.games.snake.sound.GameSound;
 
+import javax.annotation.PostConstruct;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.annotation.PostConstruct;
-import javax.swing.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j

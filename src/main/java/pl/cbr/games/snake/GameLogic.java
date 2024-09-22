@@ -23,6 +23,7 @@ import java.util.*;
 @Component
 public class GameLogic {
 
+    public static final String BOT_NAME = "Bot";
     private final GameConfig gameConfig;
     private final Collision collision;
     private final GameModel model;
@@ -33,12 +34,16 @@ public class GameLogic {
 
         model.clearBots();
         for (int i = 0; i < level.getBots(); i++) {
-            model.addPlayer(new BotPlayer(gameConfig.getDotsOnStart(), new PlayerConfig("Bot" + i, new PositionConfig(2 + i * 5, 2 + i * 5)), moveStrategy));
+            model.addPlayer(new BotPlayer(gameConfig.getDotsOnStart(), new PlayerConfig(getBotName(i), new PositionConfig(2 + i * 5, 2 + i * 5)), moveStrategy));
         }
         List<Square> forbiddenAreas = model.initPlayers();
 
         tryingToChangeDuplicatePosition(forbiddenAreas);
         model.setCollisionPoint(null);
+    }
+
+    private static String getBotName(int i) {
+        return BOT_NAME + i;
     }
 
     public boolean collisionWithPoint() {
